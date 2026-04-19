@@ -3,8 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/jpeg" href="https://iili.io/Bg7nW8v.jpg" />
+    <link id="favicon" rel="icon" type="image/jpeg" href="https://iili.io/Bg7nW8v.jpg" />
     <title>quats. | Architecture & Engineering</title>
+    <script>
+      // Dynamically make the favicon round
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = "https://iili.io/Bg7nW8v.jpg";
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext("2d");
+        ctx.beginPath();
+        ctx.arc(64, 64, 64, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(img, 0, 0, 128, 128);
+        const favicon = document.getElementById("favicon");
+        if (favicon) {
+          favicon.href = canvas.toDataURL("image/png");
+          favicon.type = "image/png";
+        }
+      };
+    </script>
   </head>
   <body>
     <div id="root"></div>
