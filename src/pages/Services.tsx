@@ -37,7 +37,7 @@ export default function Services() {
               <div className="relative w-full aspect-[4/5] max-w-md mx-auto rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
                 {/* Replace this src with your actual image uploaded to the AI Studio! */}
                 <img 
-                  src="https://picsum.photos/seed/founder/800/1000" 
+                  src="https://res.cloudinary.com/df7jfonrv/image/upload/f_auto,q_auto/WhatsApp_Image_2026-04-18_at_10.46.42_PM_atc2qo" 
                   alt="Prangon - Founder of Quats" 
                   className="w-full h-full object-cover grayscale opacity-90 hover:grayscale-0 transition-all duration-700"
                   referrerPolicy="no-referrer"
