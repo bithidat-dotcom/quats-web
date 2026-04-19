@@ -25,22 +25,46 @@ export default function Services() {
         
         {/* The Story Section */}
         <section id="story" className="mb-32">
-          <div className="flex flex-col items-center text-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="max-w-3xl mx-auto"
+              className="order-2 lg:order-1 relative"
             >
-              <span className="text-[11px] uppercase tracking-[2px] text-[#888888] mb-4 block">
+              {/* Image Container with Glow */}
+              <div className="absolute inset-0 bg-blue-500/20 blur-[50px] rounded-full" />
+              <div className="relative w-full aspect-[4/5] max-w-md mx-auto rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+                {/* Replace this src with your actual image uploaded to the AI Studio! */}
+                <img 
+                  src="https://picsum.photos/seed/founder/800/1000" 
+                  alt="Prangon - Founder of Quats" 
+                  className="w-full h-full object-cover grayscale opacity-90 hover:grayscale-0 transition-all duration-700"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
+                <div className="absolute bottom-8 left-8 right-8">
+                   <div className="text-white font-semibold text-2xl tracking-tight mb-1">Prangon</div>
+                   <div className="text-blue-400 text-sm tracking-wider uppercase font-semibold">Founder & Visionary</div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="order-1 lg:order-2"
+            >
+              <span className="text-[11px] uppercase tracking-[2px] text-blue-400 mb-4 block font-semibold">
                 Origin Story
               </span>
-              <h1 className="text-4xl md:text-5xl font-semibold tracking-tight mb-8">
-                Built by visionary youth. <br/> Scaled for global needs.
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight mb-8">
+                Built by visionary youth. <br className="hidden lg:block"/> Scaled for global needs.
               </h1>
-              <div className="space-y-6 text-[#888888] text-[18px] leading-[1.6]">
+              <div className="space-y-6 text-[#888888] text-lg leading-relaxed">
                 <p>
-                  Quats was founded by <strong>Prangon</strong>, a 9th-grade student with an extraordinary understanding of digital ecosystems. 
+                  Quats was founded by <strong className="text-white">Prangon</strong>, a 9th-grade student with an extraordinary understanding of digital ecosystems. 
                 </p>
                 <p>
                   Observing how many individuals and small businesses were suffering from a lack of proper digital representation—struggling with complex tools, expensive agencies, and outdated websites—Prangon decided to bridge the gap.

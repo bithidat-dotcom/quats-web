@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Sparkles, Image as ImageIcon, Loader2, ExternalLink, Settings2, Maximize, Orbit, SlidersHorizontal } from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
+import { Sparkles, Image as ImageIcon, Loader2, ExternalLink, Settings2, Maximize, Orbit, SlidersHorizontal, Key } from 'lucide-react';
 
 export default function AiGenerator() {
   const [prompt, setPrompt] = useState('');
+  const [apiKey, setApiKey] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -18,63 +18,75 @@ export default function AiGenerator() {
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!prompt.trim()) return;
+    if (!apiKey.trim()) {
+      setError("Please provide your OpenRouter API Key in the settings first.");
+      setShowSettings(true);
+      return;
+    }
 
     setIsGenerating(true);
     setError(null);
     setGeneratedImage(null);
 
     try {
-      // Build the prompt modifiers based on user UI selections
-      let finalPrompt = prompt;
+      // Connect to OpenRouter AI Model for Prompt Architecture
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey.trim()}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": window.location.origin,
+          "X-Title": "Quats Image Engine"
+        },
+        body: JSON.stringify({
+          model: "meta-llama/llama-3-8b-instruct:free",
+          messages: [
+            { 
+              role: "system", 
+              content: "You are an expert generative AI prompt engineer. The user will provide a basic concept. You must respond ONLY with a highly detailed, extremely descriptive visual prompt for an image generator. Do not include any conversational text, just the raw prompt string."
+            },
+            { role: "user", content: prompt }
+          ]
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to connect to the OpenRouter neural network. Check your API key.");
+      }
+
+      const data = await response.json();
+      const enhancedPrompt = data.choices?.[0]?.message?.content?.trim() || prompt;
+      
+      // Build final visual string
+      let finalPrompt = enhancedPrompt + ` aspect ratio ${ratio}`;
       
       if (quality === 'hd') {
         finalPrompt += ", masterpiece, ultra-realistic, cinematic lighting, highly detailed, 8k resolution, professional photography";
       }
       if (sizeMultiplier > 1) {
-        finalPrompt += ", sharp focus, high-resolution detail";
+        finalPrompt += ", sharp focus, hyper-detailed";
       } else if (sizeMultiplier < 1) {
-        finalPrompt += ", simple composition, fast render";
+        finalPrompt += ", simple abstract composition";
       }
 
-      // Initialize the Gemini AI client
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
-      // Call the Gemini Image Generation Model
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash-image',
-        contents: {
-          parts: [
-            { text: finalPrompt }
-          ],
-        },
-        config: {
-          imageConfig: {
-            aspectRatio: ratio as any,
-          },
-        },
-      });
-
-      let foundImage = false;
-      const parts = response.candidates?.[0]?.content?.parts || [];
+      // Generate actual layout through Pollinations renderer
+      const finalUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=${ratio === '16:9' ? 1920 : ratio === '1:1' ? 1080 : 1080}&height=${ratio === '16:9' ? 1080 : ratio === '9:16' ? 1920 : 1080}&nologo=true`;
       
-      for (const part of parts) {
-        if (part.inlineData) {
-          const base64EncodeString = part.inlineData.data;
-          const imageUrl = `data:image/jpeg;base64,${base64EncodeString}`;
-          setGeneratedImage(imageUrl);
-          foundImage = true;
-          break; // Use the first generated image
-        }
-      }
-
-      if (!foundImage) {
-        throw new Error("No image data was returned from the server.");
-      }
+      // Pre-load the image to prevent breaking UI before render
+      const img = new Image();
+      img.onload = () => {
+        setGeneratedImage(finalUrl);
+        setIsGenerating(false);
+      };
+      img.onerror = () => {
+        setError("Failed to fetch final rendered image data.");
+        setIsGenerating(false);
+      };
+      img.src = finalUrl;
       
     } catch (err: any) {
       console.error("AI Generation Error:", err);
-      setError(err.message || 'Failed to generate image. Please try again or check your prompt constraints.');
-    } finally {
+      setError(err.message || 'Failed to generate model layout. Please try again.');
       setIsGenerating(false);
     }
   };
@@ -149,7 +161,24 @@ export default function AiGenerator() {
                 animate={{ opacity: 1, height: 'auto' }}
                 className="pt-4 border-t border-white/10 overflow-hidden"
               >
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                  {/* API Key Setting */}
+                  <div className="space-y-3">
+                    <label className="text-xs uppercase tracking-widest text-[#888888] font-semibold flex items-center gap-1.5">
+                      <Key size={14}/> OpenRouter API Key
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="password"
+                        value={apiKey}
+                        onChange={(e) => setApiKey(e.target.value)}
+                        placeholder="sk-or-v1..."
+                        className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:ring-1 focus:ring-white/30 transition-all font-sans text-sm"
+                        disabled={isGenerating}
+                      />
+                    </div>
+                  </div>
+
                   {/* Ratio Setting */}
                   <div className="space-y-3">
                     <label className="text-xs uppercase tracking-widest text-[#888888] font-semibold flex items-center gap-1.5">
