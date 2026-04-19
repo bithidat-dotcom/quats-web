@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Sparkles, Image as ImageIcon, Loader2, ExternalLink, Settings2, Maximize, Orbit, SlidersHorizontal, Key } from 'lucide-react';
+import { Sparkles, Image as ImageIcon, Loader2, ExternalLink, Settings2, Maximize, Orbit, SlidersHorizontal, Key, BrainCircuit } from 'lucide-react';
 
 export default function AiGenerator() {
   const [prompt, setPrompt] = useState('');
@@ -14,6 +14,7 @@ export default function AiGenerator() {
   const [ratio, setRatio] = useState('16:9');
   const [sizeMultiplier, setSizeMultiplier] = useState(1);
   const [quality, setQuality] = useState('standard');
+  const [aiModel, setAiModel] = useState('meta-llama/llama-3-8b-instruct:free');
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +40,7 @@ export default function AiGenerator() {
           "X-Title": "Quats Image Engine"
         },
         body: JSON.stringify({
-          model: "meta-llama/llama-3-8b-instruct:free",
+          model: aiModel,
           messages: [
             { 
               role: "system", 
@@ -51,7 +52,9 @@ export default function AiGenerator() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to connect to the OpenRouter neural network. Check your API key.");
+        const errorText = await response.text();
+        console.error("OpenRouter API Error Details:", errorText);
+        throw new Error("Failed to connect to the OpenRouter neural network. Please check that your API key is valid, active, and has access to the selected model.");
       }
 
       const data = await response.json();
@@ -161,7 +164,7 @@ export default function AiGenerator() {
                 animate={{ opacity: 1, height: 'auto' }}
                 className="pt-4 border-t border-white/10 overflow-hidden"
               >
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
                   {/* API Key Setting */}
                   <div className="space-y-3">
                     <label className="text-xs uppercase tracking-widest text-[#888888] font-semibold flex items-center gap-1.5">
@@ -176,6 +179,26 @@ export default function AiGenerator() {
                         className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:ring-1 focus:ring-white/30 transition-all font-sans text-sm"
                         disabled={isGenerating}
                       />
+                    </div>
+                  </div>
+
+                  {/* Model Setting */}
+                  <div className="space-y-3">
+                    <label className="text-xs uppercase tracking-widest text-[#888888] font-semibold flex items-center gap-1.5">
+                      <BrainCircuit size={14}/> Neural Model
+                    </label>
+                    <div className="flex flex-col gap-2">
+                      <select
+                        value={aiModel}
+                        onChange={(e) => setAiModel(e.target.value)}
+                        disabled={isGenerating}
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-white/30 focus:ring-1 focus:ring-white/30 appearance-none font-medium [&>option]:bg-neutral-900 [&>option]:text-white"
+                      >
+                        <option value="meta-llama/llama-3-8b-instruct:free">Llama 3 8B (Free)</option>
+                        <option value="google/gemini-2.5-flash">Gemini 2.5 Flash</option>
+                        <option value="mistralai/mistral-7b-instruct:free">Mistral 7B (Free)</option>
+                        <option value="openrouter/auto">OpenRouter Auto</option>
+                      </select>
                     </div>
                   </div>
 
