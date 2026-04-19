@@ -13,15 +13,26 @@ export default function Assistant() {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (scrollContainerRef.current) {
+      const { scrollHeight, clientHeight } = scrollContainerRef.current;
+      scrollContainerRef.current.scrollTo({
+        top: scrollHeight - clientHeight,
+        behavior: 'smooth'
+      });
+    }
   };
 
+  // Scroll downwards when messages change, or loading state toggles
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    // Add a tiny delay to ensure DOM has painted the latest messages
+    const timeoutId = setTimeout(() => {
+      scrollToBottom();
+    }, 50);
+    return () => clearTimeout(timeoutId);
+  }, [messages, isLoading]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,14 +44,14 @@ export default function Assistant() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      // Call our internal secure backend which holds the hidden API key
+      const response = await fetch("/api/assistant/chat", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer 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`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "meta-llama/llama-3-8b-instruct:free", // Using a consistent free model string on OpenRouter
+          model: "meta-llama/llama-3-8b-instruct:free", // Using a consistent free model string
           messages: [
             { role: "system", content: "You are the Quats Intelligence Assistant, an advanced AI software engineer and creative consultant. You help users build platforms, code arrays, generate ideas, and solve deeply technical questions gracefully." },
             ...messages.map(m => ({ role: m.role, content: m.content })),
@@ -49,7 +60,11 @@ export default function Assistant() {
         })
       });
 
-      if (!response.ok) throw new Error("Failed to communicate with the neural network.");
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Assistant Backend Error:", errorData);
+        throw new Error(errorData.error || "Failed to communicate with the neural network.");
+      }
 
       const data = await response.json();
       const aiResponse = data.choices?.[0]?.message?.content || "I couldn't process that. Could you try again?";
@@ -95,7 +110,10 @@ export default function Assistant() {
           style={{ height: '600px', maxHeight: '70vh' }}
         >
           {/* Chat Window */}
-          <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+          <div 
+            ref={scrollContainerRef}
+            className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent"
+          >
             {messages.map((message, i) => (
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
@@ -130,7 +148,6 @@ export default function Assistant() {
                 </div>
               </motion.div>
             )}
-            <div ref={messagesEndRef} />
           </div>
 
           {/* Input Area */}
