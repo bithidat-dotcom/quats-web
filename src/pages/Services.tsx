@@ -39,7 +39,7 @@ export default function Services() {
                 <img 
                   src="https://res.cloudinary.com/df7jfonrv/image/upload/f_auto,q_auto/WhatsApp_Image_2026-04-18_at_10.46.42_PM_atc2qo" 
                   alt="Prangon - Founder of Quats" 
-                  className="w-full h-full object-cover grayscale opacity-90 hover:grayscale-0 transition-all duration-700"
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
