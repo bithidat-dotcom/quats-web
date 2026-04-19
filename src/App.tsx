@@ -7,6 +7,8 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Services from './pages/Services';
 import GetStarted from './pages/GetStarted';
+import AiGenerator from './pages/AiGenerator';
+import Assistant from './pages/Assistant';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -55,19 +57,23 @@ export default function App() {
     <ReactLenis root>
       <BrowserRouter>
         <ScrollToTop />
-        <div className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black relative">
+        <div className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black relative flex flex-col">
           <BackgroundAnimatedBlobs />
           
           {/* Decor line matched from theme */}
           <div className="fixed top-0 right-1/4 h-full w-[1px] bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none z-0" />
           
-          <div className="relative z-10">
+          <div className="relative z-10 flex flex-col flex-1">
             <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/get-started" element={<GetStarted />} />
-            </Routes>
+            <div className="flex-1">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/get-started" element={<GetStarted />} />
+                <Route path="/ai-generator" element={<AiGenerator />} />
+                <Route path="/assistant" element={<Assistant />} />
+              </Routes>
+            </div>
             <Footer />
           </div>
         </div>
@@ -75,3 +81,4 @@ export default function App() {
     </ReactLenis>
   );
 }
+
