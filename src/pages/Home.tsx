@@ -1,7 +1,14 @@
-import React, { useEffect } from 'react';
-import { motion } from 'motion/react';
-import { ArrowRight, Mail, MapPin, Phone, Instagram, Layers, Code2, Database, Cpu, Zap, LayoutTemplate } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ArrowRight, Mail, MapPin, Phone, Instagram, Layers, Code2, Database, Cpu, Zap, LayoutTemplate, X, ExternalLink } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+
+interface Project {
+  title: string;
+  category: string;
+  img: string;
+  desc: string;
+}
 
 export default function Home() {
   const { hash } = useLocation();
@@ -25,15 +32,6 @@ export default function Home() {
         
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
           <div className="max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[11px] uppercase tracking-[2px] text-[#888888] mb-3 block truncate"
-            >
-              System Status: Active
-            </motion.div>
-            
             <motion.h1
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -105,14 +103,11 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
               >
-                <div className="text-[11px] uppercase tracking-[3px] text-white/50 mb-4 font-semibold flex items-center justify-center md:justify-start gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" /> New Platform Release
-                </div>
                 <h2 className="text-3xl md:text-5xl font-semibold tracking-tight mb-5 text-white">
                   Get the official <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/40">Quats App</span>
                 </h2>
                 <p className="text-[#888888] text-lg mb-8 max-w-xl leading-relaxed mx-auto md:mx-0">
-                  Manage your development architecture, track project timelines, and communicate directly with our engineering team from your pocket. 
+                  Join our social platform to scroll and post your opinion.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
                   <button onClick={() => window.open('https://quats-app.netlify.app', '_blank')} className="bg-white text-black px-8 py-4 rounded-xl font-semibold hover:bg-neutral-200 transition-all flex items-center gap-3 w-full sm:w-auto justify-center shadow-[0_0_20px_rgba(255,255,255,0.1)]">
@@ -202,7 +197,17 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
-            <div className="hidden md:block absolute top-[45px] left-[10%] right-[10%] h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            {/* Background Base Line */}
+            <div className="hidden md:block absolute top-[45px] left-[10%] right-[10%] h-[1px] bg-white/10 z-0" />
+            
+            {/* Animated Progress Line */}
+            <motion.div 
+              initial={{ width: 0 }}
+              whileInView={{ width: '80%' }}
+              viewport={{ once: true }}
+              transition={{ duration: 2, ease: "easeInOut", delay: 0.5 }}
+              className="hidden md:block absolute top-[45px] left-[10%] h-[1px] bg-gradient-to-r from-green-500 via-emerald-400 to-cyan-500 shadow-[0_0_10px_rgba(34,197,94,0.5)] z-0"
+            />
             
             {[
               { num: '01', title: 'Discovery', desc: 'Analyzing requirements and conceptualizing the core architecture.' },
@@ -267,27 +272,32 @@ export default function Home() {
               { 
                 title: 'Hola Media Solutions', 
                 category: 'Corporate Platform', 
-                img: 'https://www.holamediasolutions.com/wp-content/uploads/2020/09/web-design-29.jpg' 
+                img: 'https://www.holamediasolutions.com/wp-content/uploads/2020/09/web-design-29.jpg',
+                desc: 'A comprehensive corporate architecture designed for rapid content delivery and global brand consistency.'
               },
               { 
                 title: 'Logon UX Evolution', 
                 category: 'Mobile App Interface', 
-                img: 'https://logondesign.com/assets/fornew/assets/images/portfolio/ux/4.png' 
+                img: 'https://logondesign.com/assets/fornew/assets/images/portfolio/ux/4.png',
+                desc: 'Redining the mobile experience with motion-driven navigation and high-density information display.'
               },
               { 
                 title: 'Enterprise Dashboard', 
                 category: 'SaaS Platform', 
-                img: 'https://file.mockplus.com/image/2019/11/e2c96dfa-05b1-4d84-b56c-5fc6d756a33e.jpg' 
+                img: 'https://file.mockplus.com/image/2019/11/e2c96dfa-05b1-4d84-b56c-5fc6d756a33e.jpg',
+                desc: 'Real-time telemetry and supply chain visualization for logistics conglomerates.'
               },
               { 
                 title: 'AND Academy Portal', 
                 category: 'EdTech Web App', 
-                img: 'https://www.andacademy.com/resources/wp-content/uploads/2024/02/32.webp' 
+                img: 'https://www.andacademy.com/resources/wp-content/uploads/2024/02/32.webp',
+                desc: 'Digital learning ecosystem architected to handle thousands of concurrent live streaming sessions.'
               },
               { 
                 title: 'Data Flow Component', 
                 category: 'Widget Design', 
-                img: 'https://cdn.dribbble.com/userupload/22251852/file/original-85d899df6234ff33a65f5bc75bf309b2.jpg?format=webp&resize=400x300&vertical=center' 
+                img: 'https://cdn.dribbble.com/userupload/22251852/file/original-85d899df6234ff33a65f5bc75bf309b2.jpg?format=webp&resize=400x300&vertical=center',
+                desc: 'Low-latency data visualization library optimized for high-frequency trading assets.'
               }
             ].map((project, i) => (
               <motion.div 

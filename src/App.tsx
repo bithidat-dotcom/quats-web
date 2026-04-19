@@ -7,7 +7,6 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Services from './pages/Services';
 import GetStarted from './pages/GetStarted';
-import AiGenerator from './pages/AiGenerator';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -21,44 +20,48 @@ function SplashAnimation({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete();
-    }, 2500); // Display for 2.5 seconds
+    }, 5000); // Wait exactly 5 seconds
     return () => clearTimeout(timer);
   }, [onComplete]);
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center font-sans tracking-tight"
+      className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center overflow-hidden"
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
+      exit={{ opacity: 0, transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] } }}
     >
-      <div className="flex flex-col items-center gap-8">
-        <div className="flex gap-4">
-          {[0, 1, 2].map((i) => (
-            <motion.div
-              key={i}
-              className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-green-500 shadow-[0_0_20px_rgba(34,197,94,0.8)]"
-              animate={{
-                y: ["0%", "-150%", "0%"]
-              }}
-              transition={{
-                duration: 0.8,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: i * 0.15
-              }}
-            />
-          ))}
+      <video
+        autoPlay
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover scale-105"
+      >
+        <source 
+          src="https://res.cloudinary.com/df7jfonrv/video/upload/v1776613991/Whisk_qwohzwozmzy3ugom1iz5ktotudzlrtlxemmi1yn_cgl5sv.mp4" 
+          type="video/mp4" 
+        />
+      </video>
+      
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 4.5 }}
+        className="absolute bottom-10 z-10"
+      >
+        <div className="text-white/20 text-[10px] uppercase tracking-[4px]">
+          Initializing...
         </div>
-        <motion.div
-          initial={{ opacity: 0, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, filter: 'blur(0px)' }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-5xl md:text-6xl font-semibold lowercase text-white tracking-tighter"
-        >
-          quats
-        </motion.div>
-      </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.5 }}
+        className="relative z-10 text-4xl md:text-6xl font-semibold lowercase text-white tracking-tighter mix-blend-difference"
+      >
+        quats
+      </motion.div>
     </motion.div>
   );
 }
@@ -131,7 +134,6 @@ export default function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/get-started" element={<GetStarted />} />
-                <Route path="/ai-generator" element={<AiGenerator />} />
               </Routes>
             </div>
             <Footer />

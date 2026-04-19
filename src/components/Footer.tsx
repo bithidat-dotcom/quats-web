@@ -1,5 +1,5 @@
 import React from 'react';
-import { Instagram, MapPin, Mail, Phone, Activity } from 'lucide-react';
+import { Instagram, MapPin, Mail, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Footer() {
@@ -16,9 +16,6 @@ export default function Footer() {
             <p className="text-[#888888] text-sm leading-relaxed mb-6 max-w-xs">
               Architecting high-performance web platforms and native mobile applications to provide the robust foundation required for your digital expansion.
             </p>
-            <div className="flex items-center gap-2 text-[11px] text-green-400 font-mono uppercase tracking-wider bg-green-400/10 w-fit px-3 py-1.5 rounded-full border border-green-400/20">
-              <Activity size={14} className="animate-pulse" /> All Systems Operational
-            </div>
           </div>
 
           {/* Links Column 1 */}
@@ -79,8 +76,6 @@ export default function Footer() {
               <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
               <span>Latency: 12ms</span>
             </div>
-            <div className="hidden sm:block w-[1px] h-3 bg-white/10" />
-            <span>Server: US-EAST-1</span>
           </div>
         </div>
       </div>
