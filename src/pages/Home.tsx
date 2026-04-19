@@ -129,7 +129,7 @@ export default function Home() {
       </section>
 
       {/* Tech Stack / Features Section */}
-      <section className="py-24 border-b border-white/10 relative overflow-hidden bg-black/50">
+      <section className="py-24 border-y border-white/10 relative overflow-hidden bg-black/50">
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-16">
             <motion.h2 
@@ -179,9 +179,149 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Our Process Section */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="text-center mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-[11px] uppercase tracking-[3px] text-[#888888] mb-4 font-semibold"
+            >
+              Development Protocol
+            </motion.div>
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-5xl font-semibold tracking-tight mb-4"
+            >
+               The Quats Framework
+            </motion.h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+            <div className="hidden md:block absolute top-[45px] left-[10%] right-[10%] h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            
+            {[
+              { num: '01', title: 'Discovery', desc: 'Analyzing requirements and conceptualizing the core architecture.' },
+              { num: '02', title: 'Blueprint', desc: 'Drafting UI/UX wireframes and designing database schemas.' },
+              { num: '03', title: 'Build', desc: 'Agile development phases using cutting-edge tech stacks.' },
+              { num: '04', title: 'Deploy', desc: 'Rigorous testing and seamless deployment to global CDNs.' }
+            ].map((step, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.15 }}
+                className="relative text-center md:text-left flex flex-col items-center md:items-start"
+              >
+                <div className="w-24 h-24 rounded-[2rem] bg-black border border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.05)] flex items-center justify-center text-2xl font-sans font-semibold text-white mb-6 relative z-10">
+                  {step.num}
+                </div>
+                <h3 className="text-xl font-semibold mb-3 text-white">{step.title}</h3>
+                <p className="text-[#888888] text-sm leading-relaxed max-w-[250px] md:max-w-full">{step.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Portfolio Showcase Section */}
+      <section className="py-32 border-t border-white/10 relative overflow-hidden bg-black/30">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-[11px] uppercase tracking-[3px] text-[#888888] mb-4 font-semibold"
+              >
+                Live Deployments
+              </motion.div>
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-3xl md:text-5xl font-semibold tracking-tight uppercase tracking-[-1px]"
+              >
+                 Featured Projects
+              </motion.h2>
+            </div>
+            <motion.div
+               initial={{ opacity: 0, x: 20 }}
+               whileInView={{ opacity: 1, x: 0 }}
+               viewport={{ once: true }}
+            >
+              <Link to="/services" className="text-white border-b border-white hover:text-[#888888] hover:border-[#888888] pb-1 transition-all flex items-center gap-2 text-sm font-semibold uppercase tracking-widest">
+                View All Systems <ArrowRight size={16} />
+              </Link>
+            </motion.div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {[
+              { 
+                title: 'Hola Media Solutions', 
+                category: 'Corporate Platform', 
+                img: 'https://www.holamediasolutions.com/wp-content/uploads/2020/09/web-design-29.jpg' 
+              },
+              { 
+                title: 'Logon UX Evolution', 
+                category: 'Mobile App Interface', 
+                img: 'https://logondesign.com/assets/fornew/assets/images/portfolio/ux/4.png' 
+              },
+              { 
+                title: 'Enterprise Dashboard', 
+                category: 'SaaS Platform', 
+                img: 'https://file.mockplus.com/image/2019/11/e2c96dfa-05b1-4d84-b56c-5fc6d756a33e.jpg' 
+              },
+              { 
+                title: 'AND Academy Portal', 
+                category: 'EdTech Web App', 
+                img: 'https://www.andacademy.com/resources/wp-content/uploads/2024/02/32.webp' 
+              },
+              { 
+                title: 'Data Flow Component', 
+                category: 'Widget Design', 
+                img: 'https://cdn.dribbble.com/userupload/22251852/file/original-85d899df6234ff33a65f5bc75bf309b2.jpg?format=webp&resize=400x300&vertical=center' 
+              }
+            ].map((project, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: i * 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="group cursor-pointer"
+              >
+                <div className="relative rounded-[2rem] overflow-hidden mb-6 aspect-[4/3] border border-white/5">
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                  <img src={project.img} alt={project.title} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[1.5s] ease-[cubic-bezier(0.22,1,0.36,1)]" />
+                </div>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-2xl font-semibold mb-2 text-white group-hover:text-gray-300 transition-colors">{project.title}</h3>
+                    <p className="text-[#888888] text-xs uppercase tracking-widest font-semibold">{project.category}</p>
+                  </div>
+                  <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 bg-white/5 backdrop-blur-md">
+                    <ArrowRight size={20} className="-rotate-45" />
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA Contact Section */}
-      <section id="contact" className="py-32 relative overflow-hidden">
-        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-[800px] h-[800px] bg-white/[0.02] rounded-full blur-[100px] pointer-events-none" />
+      <section id="contact" className="py-32 relative overflow-hidden bg-black/50 border-t border-white/5">
+        {/* Background glow effects */}
+        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-[800px] h-[800px] bg-green-500/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
         
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center">
@@ -191,34 +331,59 @@ export default function Home() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h2 className="text-[32px] font-semibold tracking-tight mb-8">
+              <div className="text-[11px] uppercase tracking-[3px] text-green-400 mb-6 font-semibold flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" /> System Engineers Available
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl lg:text-[56px] font-semibold tracking-[-2px] mb-8 leading-[1.1]">
                 Initialize <br />
-                <span className="text-[#888888]">Architecture</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">Architecture</span>
               </h2>
-              <p className="text-[18px] text-[#888888] mb-12 leading-[1.6] max-w-md">
-                Establish a secure connection with our implementation teams. Start your system deployment directly with Prangon today.
+              
+              <p className="text-lg md:text-xl text-[#888888] mb-12 leading-relaxed max-w-lg">
+                Establish a secure connection with our implementation teams. We are ready to engineer, scale, and deploy your next major system. Start your deployment directly with Prangon today.
               </p>
               
-              <div className="space-y-6">
-                <a href="https://wa.me/8801716807465" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-white/80 hover:text-white transition-colors group p-4 border border-white/5 bg-white/[0.02] rounded-2xl backdrop-blur-md hover:bg-white/10 w-fit">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a href="https://wa.me/8801716807465" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-white/80 hover:text-white transition-all duration-300 group p-4 border border-white/5 bg-white/[0.02] rounded-2xl backdrop-blur-md hover:bg-white/10 hover:border-white/10 w-full">
                   <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform bg-[#25D366]/20">
                     <Phone size={20} className="text-[#25D366]"/>
                   </div>
                   <div>
-                    <p className="text-xs text-white/50 mb-1 uppercase tracking-wider">WhatsApp Direct</p>
-                    <p className="font-mono text-sm">+880 1716-807465</p>
+                    <p className="text-[10px] text-white/50 mb-1 uppercase tracking-widest font-semibold">WhatsApp Direct</p>
+                    <p className="font-mono text-sm font-medium">+880 1716-807465</p>
                   </div>
                 </a>
                 
-                <a href="https://www.instagram.com/prangon_45?utm_source=qr&igsh=MTZhcXVkODV0Y3lpdg==" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-white/80 hover:text-white transition-colors group p-4 border border-white/5 bg-white/[0.02] rounded-2xl backdrop-blur-md hover:bg-white/10 w-fit">
+                <a href="https://www.instagram.com/prangon_45" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-white/80 hover:text-white transition-all duration-300 group p-4 border border-white/5 bg-white/[0.02] rounded-2xl backdrop-blur-md hover:bg-white/10 hover:border-white/10 w-full">
                   <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform bg-[#E1306C]/20">
                     <Instagram size={20} className="text-[#E1306C]"/> 
                   </div>
                   <div>
-                    <p className="text-xs text-white/50 mb-1 uppercase tracking-wider">Instagram</p>
-                    <p className="font-mono text-sm">@prangon_45</p>
+                    <p className="text-[10px] text-white/50 mb-1 uppercase tracking-widest font-semibold">Instagram</p>
+                    <p className="font-mono text-sm font-medium">@prangon_45</p>
                   </div>
                 </a>
+
+                <a href="mailto:contact@quats.com" className="flex items-center gap-4 text-white/80 hover:text-white transition-all duration-300 group p-4 border border-white/5 bg-white/[0.02] rounded-2xl backdrop-blur-md hover:bg-white/10 hover:border-white/10 w-full">
+                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform bg-blue-500/20">
+                    <Mail size={20} className="text-blue-400"/> 
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-white/50 mb-1 uppercase tracking-widest font-semibold">Email</p>
+                    <p className="font-mono text-[13px] font-medium">contact@quats.com</p>
+                  </div>
+                </a>
+
+                <div className="flex items-center gap-4 text-white/80 group p-4 border border-white/5 bg-white/[0.02] rounded-2xl backdrop-blur-md w-full">
+                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center bg-white/5">
+                    <MapPin size={20} className="text-white/60"/> 
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-white/50 mb-1 uppercase tracking-widest font-semibold">Location</p>
+                    <p className="font-mono text-[13px] font-medium">Global / Remote</p>
+                  </div>
+                </div>
               </div>
             </motion.div>
             
@@ -227,17 +392,30 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="bg-white/[0.03] border border-white/10 p-8 md:p-12 rounded-3xl backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] flex flex-col items-center text-center justify-center min-h-[400px]"
+              className="relative p-[1px] rounded-[2rem] overflow-hidden group"
             >
-              <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mb-6">
-                 <ArrowRight size={32} />
-              </div>
-              <h3 className="text-2xl font-semibold mb-4">Ready to Build?</h3>
-              <p className="text-[#888888] mb-8">Deploy robust websites and platforms configured perfectly to your constraints.</p>
+              {/* Animated gradient border */}
+              <div className="absolute inset-0 bg-gradient-to-br from-green-400/30 via-transparent to-blue-500/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
               
-              <Link to="/get-started" className="w-full bg-white text-black py-[16px] px-[36px] rounded-[12px] font-semibold text-[16px] hover:bg-neutral-200 transition-colors flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                Start the Process <ArrowRight size={18} />
-              </Link>
+              <div className="relative bg-black/80 border border-white/10 p-8 sm:p-10 md:p-14 rounded-[2rem] backdrop-blur-2xl flex flex-col items-center text-center justify-center min-h-[350px] sm:min-h-[450px]">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-full flex items-center justify-center mb-6 sm:mb-8 border border-white/10 shadow-[0_0_30px_rgba(34,197,94,0.2)]">
+                   <ArrowRight className="text-white w-8 h-8 sm:w-9 sm:h-9" />
+                </div>
+                
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight mb-4 sm:mb-5">Ready to Build?</h3>
+                <p className="text-[#888888] text-base sm:text-lg mb-8 sm:mb-10 max-w-sm leading-relaxed">
+                  Deploy robust websites, mobile apps, and enterprise platforms configured perfectly to your exact constraints.
+                </p>
+                
+                <Link to="/get-started" className="w-full relative overflow-hidden group/btn rounded-xl">
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-cyan-500 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
+                  <div className="relative bg-white text-black px-6 py-4 sm:px-8 sm:py-5 flex items-center justify-center gap-2 sm:gap-3 font-semibold text-base sm:text-lg hover:bg-neutral-200 group-hover/btn:bg-transparent group-hover/btn:text-white transition-all duration-300">
+                    Start the Process <ArrowRight className="w-[18px] h-[18px] sm:w-5 sm:h-5 group-hover/btn:translate-x-1 transition-transform" />
+                  </div>
+                </Link>
+                
+                <p className="text-[#555555] text-[10px] sm:text-xs font-mono mt-5 sm:mt-6 uppercase tracking-widest text-center">Estimated response time: 2-4 hours</p>
+              </div>
             </motion.div>
           </div>
         </div>

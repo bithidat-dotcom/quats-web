@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
+import { ReactLenis } from 'lenis/react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -51,24 +52,26 @@ function BackgroundAnimatedBlobs() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <div className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black relative">
-        <BackgroundAnimatedBlobs />
-        
-        {/* Decor line matched from theme */}
-        <div className="fixed top-0 right-1/4 h-full w-[1px] bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none z-0" />
-        
-        <div className="relative z-10">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/get-started" element={<GetStarted />} />
-          </Routes>
-          <Footer />
+    <ReactLenis root>
+      <BrowserRouter>
+        <ScrollToTop />
+        <div className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black relative">
+          <BackgroundAnimatedBlobs />
+          
+          {/* Decor line matched from theme */}
+          <div className="fixed top-0 right-1/4 h-full w-[1px] bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none z-0" />
+          
+          <div className="relative z-10">
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/get-started" element={<GetStarted />} />
+            </Routes>
+            <Footer />
+          </div>
         </div>
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ReactLenis>
   );
 }
