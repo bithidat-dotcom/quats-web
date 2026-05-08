@@ -319,34 +319,34 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {[
               { 
-                title: 'Hola Media Solutions', 
-                category: 'Corporate Platform', 
-                img: 'https://www.holamediasolutions.com/wp-content/uploads/2020/09/web-design-29.jpg',
-                desc: 'A comprehensive corporate architecture designed for rapid content delivery and global brand consistency.'
+                title: 'Dolfin Social Sentinel', 
+                category: '2.7b Market Master', 
+                img: 'https://images.unsplash.com/photo-1620712943543-bcc4628c7007?auto=format&fit=crop&w=1200&q=80',
+                desc: 'Autonomous marketing orchestration managing multi-channel social presence and client lead generation logic.'
               },
               { 
-                title: 'Logon UX Evolution', 
-                category: 'Mobile App Interface', 
-                img: 'https://logondesign.com/assets/fornew/assets/images/portfolio/ux/4.png',
-                desc: 'Redining the mobile experience with motion-driven navigation and high-density information display.'
+                title: 'Nexus Control Core', 
+                category: 'PC Protocol 1.0', 
+                img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80',
+                desc: 'The foundational voice-command interface for computer task handling and system-level app navigation.'
               },
               { 
-                title: 'Enterprise Dashboard', 
-                category: 'SaaS Platform', 
-                img: 'https://file.mockplus.com/image/2019/11/e2c96dfa-05b1-4d84-b56c-5fc6d756a33e.jpg',
-                desc: 'Real-time telemetry and supply chain visualization for logistics conglomerates.'
+                title: 'Ghost Telemetry Unit', 
+                category: '1.5 Performance Logic', 
+                img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+                desc: 'Real-time CPU/RAM optimization and thermal monitoring interface for high-density multi-process systems.'
               },
               { 
-                title: 'AND Academy Portal', 
-                category: 'EdTech Web App', 
-                img: 'https://www.andacademy.com/resources/wp-content/uploads/2024/02/32.webp',
-                desc: 'Digital learning ecosystem architected to handle thousands of concurrent live streaming sessions.'
+                title: 'Dolfin Pro Brain V2', 
+                category: '2.5b Self-Brain logic', 
+                img: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80',
+                desc: 'Total autonomous control authority featuring human-grade problem solving and emergency safety overrides.'
               },
               { 
-                title: 'Data Flow Component', 
-                category: 'Widget Design', 
-                img: 'https://cdn.dribbble.com/userupload/22251852/file/original-85d899df6234ff33a65f5bc75bf309b2.jpg?format=webp&resize=400x300&vertical=center',
-                desc: 'Low-latency data visualization library optimized for high-frequency trading assets.'
+                title: 'Bio-Sync Terminal', 
+                category: 'System Integration', 
+                img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80',
+                desc: 'A unified control hub architected to bridge legacy mobile hardware with modern autonomous AI protocols.'
               }
             ].map((project, i) => (
               <motion.div 
