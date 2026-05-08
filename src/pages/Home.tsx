@@ -126,27 +126,47 @@ export default function Home() {
       {/* Tech Stack / Features Section */}
       <section className="py-24 border-y border-white/10 relative overflow-hidden bg-black/50">
         <div className="container mx-auto px-6 max-w-7xl">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 px-4">
             <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              className="text-3xl md:text-4xl font-semibold tracking-tight mb-4"
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="text-3xl md:text-5xl font-semibold tracking-tight mb-4"
             >
                Architecting with precision. 
             </motion.h2>
             <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: 0.1 }}
-              className="text-[#888888] max-w-2xl mx-auto"
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[#888888] text-lg md:text-xl max-w-2xl mx-auto"
             >
                We utilize industry-leading technology to ensure your platform is scalable, exceptionally fast, and completely secure.
             </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Featured Section Video */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="relative max-w-5xl mx-auto mb-24 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.6)] bg-black/40 group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 z-10 pointer-events-none" />
+            <video
+              src="https://res.cloudinary.com/df7jfonrv/video/upload/Man_creating_apps_video_202605081112_vvkqqh.mp4?_s=vp-3.7.2"
+              className="w-full aspect-video object-cover scale-110 transform group-hover:scale-[1.15] transition-transform duration-[2s] ease-[cubic-bezier(0.22,1,0.36,1)]"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
             {[
               { icon: <LayoutTemplate size={24} />, title: 'Modern Frontend', desc: 'React, Next.js, and immersive animations creating fluid user interfaces.' },
               { icon: <Layers size={24} />, title: 'Architecture Planning', desc: 'System level design that allows your platform to scale without bottlenecks.' },
@@ -171,6 +191,21 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+
+          {/* New Image Showcase Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full max-w-5xl mx-auto rounded-[2.5rem] overflow-hidden border border-white/10 bg-black/40 shadow-2xl"
+          >
+            <img 
+              src="https://i.postimg.cc/kG6VHZfH/make-a-video-where-a-202605081208.jpg" 
+              alt="System Architecture Visualization" 
+              className="w-full h-auto object-cover"
+            />
+          </motion.div>
         </div>
       </section>
 
