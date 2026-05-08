@@ -32,6 +32,14 @@ export default function Home() {
         
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
           <div className="max-w-4xl">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="w-20 h-20 mb-8 rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)]"
+            >
+              <img src="https://i.ibb.co.com/d0LcTMfR/Dmitri-dmiiiitri-on-X.jpg" alt="Dolfin Logo" className="w-full h-full object-cover" />
+            </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -54,13 +62,19 @@ export default function Home() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col sm:flex-row"
+              className="flex flex-col sm:flex-row gap-4"
             >
               <Link
                 to="/services"
                 className="bg-white text-black px-[36px] py-[16px] rounded text-[16px] font-semibold hover:bg-neutral-200 transition-all flex items-center justify-center gap-2"
               >
                 Discover Our Services
+              </Link>
+              <Link
+                to="/pricing"
+                className="bg-white/10 border border-white/20 backdrop-blur-md text-white px-[36px] py-[16px] rounded text-[16px] font-semibold hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2"
+              >
+                Dolfin Agent Pricing
               </Link>
             </motion.div>
           </div>

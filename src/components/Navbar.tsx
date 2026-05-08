@@ -17,14 +17,20 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Our Story & Services', href: '/services' },
+    { name: 'Pricing', href: '/pricing' },
   ];
 
   return (
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-black/80 backdrop-blur-md border-b border-white/10 h-[80px] flex items-center' : 'bg-transparent h-[80px] border-b border-white/10 flex items-center'}`}>
         <div className="container mx-auto px-6 max-w-7xl flex items-center justify-between">
-          <Link to="/" className="text-[24px] font-bold tracking-[-1px] lowercase relative z-10 text-white">
-            quats.
+          <Link to="/" className="flex items-center gap-3 relative z-10 group">
+            <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/10 transition-transform group-hover:scale-110 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+               <img src="https://i.ibb.co.com/d0LcTMfR/Dmitri-dmiiiitri-on-X.jpg" alt="Dolfin Logo" className="w-full h-full object-cover" />
+            </div>
+            <span className="text-[22px] font-bold tracking-[-1px] lowercase text-white">
+              quats.
+            </span>
           </Link>
           
           <div className="hidden md:flex items-center space-x-[32px] relative z-10">

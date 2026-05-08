@@ -10,8 +10,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand Column */}
           <div className="flex flex-col">
-            <Link to="/" className="text-[24px] font-bold tracking-[-1px] lowercase text-white mb-6">
-              quats.
+            <Link to="/" className="flex items-center gap-3 mb-6 group">
+              <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/10 transition-transform group-hover:scale-110 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+                 <img src="https://i.ibb.co.com/d0LcTMfR/Dmitri-dmiiiitri-on-X.jpg" alt="Dolfin Logo" className="w-full h-full object-cover" />
+              </div>
+              <span className="text-[22px] font-bold tracking-[-1px] lowercase text-white">
+                quats.
+              </span>
             </Link>
             <p className="text-[#888888] text-sm leading-relaxed mb-6 max-w-xs">
               Architecting high-performance web platforms and native mobile applications to provide the robust foundation required for your digital expansion.

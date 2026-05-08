@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Services from './pages/Services';
 import GetStarted from './pages/GetStarted';
+import Pricing from './pages/Pricing';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -20,7 +21,7 @@ function SplashAnimation({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete();
-    }, 2500); // Reverting to 2.5 seconds for dots animation
+    }, 3000); // Increased slightly to show logo
     return () => clearTimeout(timer);
   }, [onComplete]);
 
@@ -31,12 +32,21 @@ function SplashAnimation({ onComplete }: { onComplete: () => void }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
     >
-      <div className="flex flex-col items-center gap-8">
+      <div className="flex flex-col items-center gap-12">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="w-32 h-32 rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(255,255,255,0.1)]"
+        >
+          <img src="https://i.ibb.co.com/d0LcTMfR/Dmitri-dmiiiitri-on-X.jpg" alt="Dolfin Logo" className="w-full h-full object-cover" />
+        </motion.div>
+
         <div className="flex gap-4">
           {[0, 1, 2].map((i) => (
             <motion.div
               key={i}
-              className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-green-500 shadow-[0_0_20px_rgba(34,197,94,0.8)]"
+              className="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_20px_rgba(34,197,94,0.8)]"
               animate={{
                 y: ["0%", "-150%", "0%"]
               }}
@@ -122,6 +132,7 @@ export default function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/get-started" element={<GetStarted />} />
+                <Route path="/pricing" element={<Pricing />} />
               </Routes>
             </div>
             <Footer />
