@@ -108,7 +108,15 @@ export default function Services() {
               {
                 tag: '03 / Design',
                 title: 'Interface Engineering',
-                desc: 'Precision-crafted UI/UX that seamlessly bridges the gap between complex backend systems and front-end simplicity.'
+                desc: 'Precision-crafted UI/UX systems that prioritize cognitive load reduction, accessibility, and fluid motion. We leverage modern mental models to build interfaces that feel like a natural extension of the user\'s workflow.',
+                details: [
+                  'Dynamic Motion Studies',
+                  'Accessibility (a11y) Architecture',
+                  'High-Density Data Viz',
+                  'Cognitive Friction Audits',
+                  'Behavioral Analytics Setup',
+                  'Rapid Prototyping Loops'
+                ]
               }
             ].map((service, i) => (
               <motion.div 
@@ -117,15 +125,25 @@ export default function Services() {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
                 }}
-                className="p-[30px] rounded-[8px] border border-white/5 bg-[#111111] relative overflow-hidden group"
+                className="p-[30px] rounded-[2.5rem] border border-white/10 bg-black/40 backdrop-blur-xl relative overflow-hidden group hover:border-blue-500/50 transition-all duration-500"
               >
-                <span className="text-[11px] uppercase tracking-[2px] text-[#888888] mb-3 block">
+                <div className="absolute -top-10 -right-10 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-colors" />
+                <span className="text-[11px] uppercase tracking-[3px] text-blue-400 mb-4 block font-bold">
                   {service.tag}
                 </span>
-                <h3 className="text-[18px] font-semibold mb-[12px]">{service.title}</h3>
-                <p className="text-[14px] text-[#888888] leading-[1.5]">
+                <h3 className="text-xl font-bold mb-4 text-white uppercase tracking-wider">{service.title}</h3>
+                <p className="text-[14px] text-[#888888] leading-relaxed group-hover:text-[#bbbbbb] transition-colors mb-6">
                   {service.desc}
                 </p>
+                {service.details && (
+                  <div className="flex flex-wrap gap-2">
+                    {service.details.map((detail, idx) => (
+                      <span key={idx} className="text-[10px] px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/40 uppercase font-black tracking-widest group-hover:border-blue-500/30 group-hover:text-white/60 transition-all">
+                        {detail}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </motion.div>
             ))}
           </motion.div>

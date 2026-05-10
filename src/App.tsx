@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ReactLenis } from 'lenis/react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import { Logo } from './components/Logo';
 import Home from './pages/Home';
 import Services from './pages/Services';
 import GetStarted from './pages/GetStarted';
@@ -37,9 +38,8 @@ function SplashAnimation({ onComplete }: { onComplete: () => void }) {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="w-32 h-32 rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(255,255,255,0.1)]"
         >
-          <img src="https://i.ibb.co.com/d0LcTMfR/Dmitri-dmiiiitri-on-X.jpg" alt="Dolfin Logo" className="w-full h-full object-cover" />
+          <Logo className="w-32 h-32" />
         </motion.div>
 
         <div className="flex gap-4">

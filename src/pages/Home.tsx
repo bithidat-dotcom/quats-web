@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Mail, MapPin, Phone, Instagram, Layers, Code2, Database, Cpu, Zap, LayoutTemplate, X, ExternalLink } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import { Logo } from '../components/Logo';
 
 interface Project {
   title: string;
@@ -27,8 +28,19 @@ export default function Home() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/[0.03] rounded-full blur-[120px] pointer-events-none" />
+      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-black">
+        {/* Space Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0" 
+            alt="Space Background" 
+            className="w-full h-full object-cover opacity-60"
+            referrerPolicy="no-referrer"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black" />
+        </div>
+
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
         
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
           <div className="max-w-4xl">
@@ -36,26 +48,26 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="w-20 h-20 mb-8 rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)]"
             >
-              <img src="https://i.ibb.co.com/d0LcTMfR/Dmitri-dmiiiitri-on-X.jpg" alt="Dolfin Logo" className="w-full h-full object-cover" />
+              <Logo className="w-20 h-20 mb-8" />
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-4xl md:text-[72px] font-semibold tracking-[-2px] leading-[1.05] mb-6"
+              className="text-2xl md:text-[42px] font-black leading-[1.3] mb-8 font-game uppercase"
             >
-              Create your own app/website from here now.
+              Full-Scale <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-white to-blue-400/50">App Building.</span>
             </motion.h1>
             
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[18px] text-[#888888] max-w-[480px] mb-[32px] leading-[1.6]"
+              className="text-[10px] md:text-[12px] text-zinc-400 max-w-[600px] mb-[40px] leading-[1.8] font-game uppercase tracking-tight"
             >
-              Quats engineers high-performance web platforms and native mobile applications, providing the robust foundation required for your digital expansion.
+              The advanced platform for building high-performance websites and applications, architected for rapid digital orchestration.
             </motion.p>
             
             <motion.div
@@ -90,24 +102,8 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="w-48 h-48 md:w-64 md:h-64 shrink-0 rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(255,255,255,0.05)] relative group"
             >
-               {/* 1024x1024 Logo Image */}
-               <img 
-                  src="https://iili.io/Bg7nW8v.jpg" 
-                  alt="Quats App Background" 
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" 
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    if (target.src === 'https://iili.io/Bg7nW8v.jpg') {
-                      target.src = 'https://iili.io/Bg7nW8v.png'; // Try png format as fallback
-                    } else if (target.src === 'https://iili.io/Bg7nW8v.png') {
-                      target.src = 'https://iili.io/Bg7nW8v.md.jpg'; // Try medium size fallback
-                    } else {
-                      target.src = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1024&h=1024&q=80'; // Unsplash Fallback
-                    }
-                  }}
-               />
+              <Logo className="w-48 h-48 md:w-64 md:h-64 shrink-0" />
             </motion.div>
             
             <div className="flex-1 text-center md:text-left">
@@ -355,19 +351,55 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: i * 0.2, ease: [0.22, 1, 0.36, 1] }}
-                className="group cursor-pointer"
+                className="group cursor-pointer relative"
               >
-                <div className="relative rounded-[2rem] overflow-hidden mb-6 aspect-[4/3] border border-white/5">
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500 z-10" />
-                  <img src={project.img} alt={project.title} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[1.5s] ease-[cubic-bezier(0.22,1,0.36,1)]" />
-                </div>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-2xl font-semibold mb-2 text-white group-hover:text-gray-300 transition-colors">{project.title}</h3>
-                    <p className="text-[#888888] text-xs uppercase tracking-widest font-semibold">{project.category}</p>
+                <div className="relative rounded-[2.5rem] overflow-hidden mb-8 aspect-[4/3] border border-white/10 bg-[#0A0A0A] shadow-[0_30px_60px_-12px_rgba(0,0,0,0.5)]">
+                  {/* Subtle Inner Glow */}
+                  <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[2.5rem] pointer-events-none z-20" />
+                  
+                  {/* Glowing Edge Gradient */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-15 pointer-events-none">
+                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/80 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
                   </div>
-                  <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 bg-white/5 backdrop-blur-md">
-                    <ArrowRight size={20} className="-rotate-45" />
+                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-700 z-10" />
+                  
+                  <img src={project.img} alt={project.title} className="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-[2s] ease-[cubic-bezier(0.22,1,0.36,1)] grayscale-[0.2] group-hover:grayscale-0" />
+                  
+                  {/* Floating Content Overlay */}
+                  <div className="absolute inset-0 z-30 flex flex-col justify-end p-8">
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
+                    >
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 backdrop-blur-md mb-3">
+                         <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                         <span className="text-[9px] text-blue-400 font-black uppercase tracking-[0.2em]">{project.category}</span>
+                      </div>
+                      <h3 className="text-2xl font-bold text-white mb-2 tracking-tight group-hover:text-blue-400 transition-colors uppercase italic">{project.title}</h3>
+                      <p className="text-zinc-400 text-sm leading-relaxed max-w-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">{project.desc}</p>
+                    </motion.div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between px-2">
+                  <div className="flex -space-x-2">
+                    {[1,2,3].map(n => (
+                      <div key={n} className="w-6 h-6 rounded-full border border-black bg-zinc-800 flex items-center justify-center overflow-hidden">
+                        <img src={`https://i.pravatar.cc/100?img=${n + (i*5)}`} className="w-full h-full object-cover opacity-60" />
+                      </div>
+                    ))}
+                    <div className="w-6 h-6 rounded-full border border-black bg-zinc-900 flex items-center justify-center text-[8px] text-white font-bold">
+                      +12
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <span className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.2em]">View Spec</span>
+                    <div className="w-12 h-12 rounded-2xl border border-white/5 bg-white/5 backdrop-blur-md flex items-center justify-center text-white transform group-hover:rotate-45 group-hover:bg-white group-hover:text-black transition-all duration-500">
+                      <ArrowRight size={20} />
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -390,57 +422,60 @@ export default function Home() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="text-[11px] uppercase tracking-[3px] text-green-400 mb-6 font-semibold flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" /> System Engineers Available
+              <div className="text-[11px] uppercase tracking-[3px] text-green-400 mb-6 font-semibold flex items-center gap-2 font-game">
+                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" /> [ONLINE]
               </div>
               
-              <h2 className="text-4xl md:text-5xl lg:text-[56px] font-semibold tracking-[-2px] mb-8 leading-[1.1]">
-                Initialize <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">Architecture</span>
+              <h2 className="text-3xl md:text-4xl lg:text-[44px] font-black tracking-tighter mb-8 leading-[1.1] font-game">
+                SELECT <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">MISSION</span>
               </h2>
               
-              <p className="text-lg md:text-xl text-[#888888] mb-12 leading-relaxed max-w-lg">
-                Establish a secure connection with our implementation teams. We are ready to engineer, scale, and deploy your next major system. Start your deployment directly with Prangon today.
+              <p className="text-sm md:text-base text-[#888888] mb-12 leading-relaxed max-w-lg font-mono">
+                &gt; Initialize communication sequence... <br/>
+                &gt; Protocol: Direct Deployment <br/>
+                &gt; Target: Founder Prangon <br/>
+                &gt; Status: Ready for extraction
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <a href="https://wa.me/8801716807465" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-white/80 hover:text-white transition-all duration-300 group p-4 border border-white/5 bg-white/[0.02] rounded-2xl backdrop-blur-md hover:bg-white/10 hover:border-white/10 w-full">
-                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform bg-[#25D366]/20">
+                <a href="https://wa.me/8801716807465" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-white/80 hover:text-white transition-all duration-300 group p-4 border-2 border-white/10 bg-black rounded-lg hover:border-green-400 hover:shadow-[4px_4px_0_rgba(34,197,94,1)] w-full">
+                  <div className="w-12 h-12 rounded-lg border-2 border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform bg-[#25D366]/20">
                     <Phone size={20} className="text-[#25D366]"/>
                   </div>
                   <div>
-                    <p className="text-[10px] text-white/50 mb-1 uppercase tracking-widest font-semibold">WhatsApp Direct</p>
-                    <p className="font-mono text-sm font-medium">+880 1716-807465</p>
+                    <p className="text-[8px] text-white/50 mb-1 uppercase tracking-widest font-game">WHATSAPP</p>
+                    <p className="font-mono text-[10px] font-medium">+880 1716-807465</p>
                   </div>
                 </a>
                 
-                <a href="https://www.instagram.com/prangon_45" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-white/80 hover:text-white transition-all duration-300 group p-4 border border-white/5 bg-white/[0.02] rounded-2xl backdrop-blur-md hover:bg-white/10 hover:border-white/10 w-full">
-                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform bg-[#E1306C]/20">
+                <a href="https://www.instagram.com/prangon_45" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-white/80 hover:text-white transition-all duration-300 group p-4 border-2 border-white/10 bg-black rounded-lg hover:border-pink-500 hover:shadow-[4px_4px_0_rgba(225,48,108,1)] w-full">
+                  <div className="w-12 h-12 rounded-lg border-2 border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform bg-[#E1306C]/20">
                     <Instagram size={20} className="text-[#E1306C]"/> 
                   </div>
                   <div>
-                    <p className="text-[10px] text-white/50 mb-1 uppercase tracking-widest font-semibold">Instagram</p>
-                    <p className="font-mono text-sm font-medium">@prangon_45</p>
+                    <p className="text-[8px] text-white/50 mb-1 uppercase tracking-widest font-game">INSTA</p>
+                    <p className="font-mono text-[10px] font-medium">@prangon_45</p>
                   </div>
                 </a>
 
-                <a href="mailto:contact@quats.com" className="flex items-center gap-4 text-white/80 hover:text-white transition-all duration-300 group p-4 border border-white/5 bg-white/[0.02] rounded-2xl backdrop-blur-md hover:bg-white/10 hover:border-white/10 w-full">
-                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform bg-blue-500/20">
+                <a href="mailto:contact@quats.com" className="flex items-center gap-4 text-white/80 hover:text-white transition-all duration-300 group p-4 border-2 border-white/10 bg-black rounded-lg hover:border-blue-500 hover:shadow-[4px_4px_0_rgba(59,130,246,1)] w-full">
+                  <div className="w-12 h-12 rounded-lg border-2 border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform bg-blue-500/20">
                     <Mail size={20} className="text-blue-400"/> 
                   </div>
                   <div>
-                    <p className="text-[10px] text-white/50 mb-1 uppercase tracking-widest font-semibold">Email</p>
-                    <p className="font-mono text-[13px] font-medium">contact@quats.com</p>
+                    <p className="text-[8px] text-white/50 mb-1 uppercase tracking-widest font-game">EMAIL</p>
+                    <p className="font-mono text-[10px] font-medium">contact@quats.com</p>
                   </div>
                 </a>
 
-                <div className="flex items-center gap-4 text-white/80 group p-4 border border-white/5 bg-white/[0.02] rounded-2xl backdrop-blur-md w-full">
-                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center bg-white/5">
-                    <MapPin size={20} className="text-white/60"/> 
+                <div className="flex items-center gap-4 text-white/80 group p-4 border-2 border-white/10 bg-black rounded-lg w-full">
+                  <div className="w-12 h-12 rounded-lg border-2 border-white/10 flex items-center justify-center bg-white/5">
+                    <MapPin size={20} className="text-zinc-500"/> 
                   </div>
                   <div>
-                    <p className="text-[10px] text-white/50 mb-1 uppercase tracking-widest font-semibold">Location</p>
-                    <p className="font-mono text-[13px] font-medium">Global / Remote</p>
+                    <p className="text-[8px] text-white/50 mb-1 uppercase tracking-widest font-game">LOC</p>
+                    <p className="font-mono text-[10px] font-medium">Remote Core</p>
                   </div>
                 </div>
               </div>
@@ -461,19 +496,19 @@ export default function Home() {
                    <ArrowRight className="text-white w-8 h-8 sm:w-9 sm:h-9" />
                 </div>
                 
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight mb-4 sm:mb-5">Ready to Build?</h3>
-                <p className="text-[#888888] text-base sm:text-lg mb-8 sm:mb-10 max-w-sm leading-relaxed">
-                  Deploy robust websites, mobile apps, and enterprise platforms configured perfectly to your exact constraints.
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-4 sm:mb-5 font-game tracking-tighter">Level Clear?</h3>
+                <p className="text-[#888888] text-[10px] sm:text-xs mb-8 sm:mb-10 max-w-sm leading-relaxed font-game uppercase tracking-tight">
+                   Press Start <br/> to deploy new <br/> world architecture
                 </p>
                 
-                <Link to="/get-started" className="w-full relative overflow-hidden group/btn rounded-xl">
-                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-cyan-500 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
-                  <div className="relative bg-white text-black px-6 py-4 sm:px-8 sm:py-5 flex items-center justify-center gap-2 sm:gap-3 font-semibold text-base sm:text-lg hover:bg-neutral-200 group-hover/btn:bg-transparent group-hover/btn:text-white transition-all duration-300">
-                    Start the Process <ArrowRight className="w-[18px] h-[18px] sm:w-5 sm:h-5 group-hover/btn:translate-x-1 transition-transform" />
+                <Link to="/get-started" className="w-full relative overflow-hidden group/btn rounded">
+                  <div className="absolute inset-0 bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.5)] opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
+                  <div className="relative bg-white text-black px-6 py-4 sm:px-8 sm:py-5 flex items-center justify-center gap-2 sm:gap-3 font-game text-[10px] sm:text-xs hover:bg-neutral-200 group-hover/btn:bg-transparent group-hover/btn:text-white transition-all duration-300 border-b-4 border-zinc-400 active:border-b-0 active:translate-y-1">
+                    START MISSION <ArrowRight className="w-[14px] h-[14px] sm:w-4 sm:h-4 group-hover/btn:translate-x-1 transition-transform" />
                   </div>
                 </Link>
                 
-                <p className="text-[#555555] text-[10px] sm:text-xs font-mono mt-5 sm:mt-6 uppercase tracking-widest text-center">Estimated response time: 2-4 hours</p>
+                <p className="text-[#555555] text-[8px] sm:text-[9px] font-game mt-5 sm:mt-6 uppercase tracking-widest text-center">Sync Speed: 2-4 Hours</p>
               </div>
             </motion.div>
           </div>

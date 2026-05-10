@@ -1,6 +1,7 @@
 import React from 'react';
 import { Instagram, MapPin, Mail, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Logo } from './Logo';
 
 export default function Footer() {
   return (
@@ -11,10 +12,8 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="flex flex-col">
             <Link to="/" className="flex items-center gap-3 mb-6 group">
-              <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/10 transition-transform group-hover:scale-110 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-                 <img src="https://i.ibb.co.com/d0LcTMfR/Dmitri-dmiiiitri-on-X.jpg" alt="Dolfin Logo" className="w-full h-full object-cover" />
-              </div>
-              <span className="text-[22px] font-bold tracking-[-1px] lowercase text-white">
+              <Logo />
+              <span className="text-[22px] font-bold tracking-[-1px] uppercase text-white">
                 quats.
               </span>
             </Link>

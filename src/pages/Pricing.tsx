@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Zap, ArrowRight, X, User, Phone, Mail, MessageSquare } from 'lucide-react';
+import { Logo } from '../components/Logo';
 
 interface Plan {
   tier: string;
@@ -68,6 +69,7 @@ export default function Pricing() {
       features: [
         'Full PC Control Authority',
         'Autonomous Self-Brain Logic',
+        'Custom UX Flow Orchestration',
         'Human-Grade Problem Solving',
         'Overheat Auto-Shutdown',
         'Emergency Email Protocol',
@@ -125,9 +127,8 @@ export default function Pricing() {
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="w-24 h-24 mx-auto mb-8 rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.1)]"
             >
-              <img src="https://i.ibb.co.com/d0LcTMfR/Dmitri-dmiiiitri-on-X.jpg" alt="Dolfin Logo" className="w-full h-full object-cover" />
+              <Logo className="w-24 h-24 mx-auto mb-8" />
             </motion.div>
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
@@ -154,67 +155,73 @@ export default function Pricing() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
                 whileHover={{ y: -10 }}
-                className={`relative group p-8 rounded-[2.5rem] bg-white/[0.03] backdrop-blur-xl border ${plan.border} hover:bg-white/[0.06] transition-all duration-500 shadow-2xl flex flex-col`}
+                className={`relative group p-8 rounded-[2.5rem] bg-black/40 backdrop-blur-2xl border border-white/10 hover:border-blue-500/50 transition-all duration-500 shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden`}
               >
+                {/* Dribbble Style Glow Effect */}
+                <div className="absolute -top-20 -right-20 w-40 h-40 bg-blue-500/10 rounded-full blur-[60px] group-hover:bg-blue-500/20 transition-colors" />
+                
                 {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-[10px] uppercase tracking-widest font-bold px-4 py-1.5 rounded-full z-20 shadow-lg shadow-blue-500/20">
-                    Most Popular
+                  <div className="absolute -top-px left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 to-cyan-400 text-white text-[9px] uppercase tracking-[0.2em] font-black px-6 py-1 rounded-b-full z-20 shadow-lg shadow-blue-500/20">
+                    Priority Tier
                   </div>
                 )}
 
                 {plan.isComingSoon && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-500 text-black text-[10px] uppercase tracking-widest font-bold px-4 py-1.5 rounded-full z-20 shadow-lg shadow-amber-500/20">
-                    Coming Soon
+                  <div className="absolute -top-px left-1/2 -translate-x-1/2 bg-amber-500 text-black text-[9px] uppercase tracking-[0.2em] font-black px-6 py-1 rounded-b-full z-20 shadow-lg">
+                    Development
                   </div>
                 )}
                 
-                <div className={`mb-8 w-14 h-14 rounded-2xl bg-gradient-to-br ${plan.gradient} flex items-center justify-center text-white font-bold text-xl shadow-lg relative overflow-hidden group-hover:scale-110 transition-transform duration-500`}>
-                  <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                  {plan.tier}
+                <div className="flex items-center justify-between mb-8">
+                  <div className={`w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white font-mono text-sm shadow-inner group-hover:border-blue-500/30 transition-colors`}>
+                    {plan.tier}
+                  </div>
+                  <div className="h-px flex-1 mx-4 bg-gradient-to-r from-white/10 to-transparent" />
                 </div>
 
                 <div className="mb-6">
-                  <h3 className="text-2xl font-semibold mb-1 text-white">{plan.name}</h3>
+                  <h3 className="text-xl font-bold mb-1 text-white uppercase tracking-wider">{plan.name}</h3>
                   {plan.price ? (
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-3xl font-bold text-white">${plan.price}</span>
+                    <div className="flex items-baseline gap-2 mt-2">
+                      <span className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 tracking-tighter">${plan.price}</span>
                       {plan.originalPrice && (
-                        <span className="text-sm text-[#555555] line-through">${plan.originalPrice}</span>
+                        <span className="text-sm text-zinc-600 line-through">${plan.originalPrice}</span>
                       )}
-                      <span className="text-xs text-[#888888] font-medium">/ license</span>
+                      <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest tracking-widest">/ terminal</span>
                     </div>
                   ) : (
-                    <div className="text-xl font-bold text-amber-500 mt-2">Launching V2.7b</div>
+                    <div className="text-lg font-black text-amber-500 mt-2 uppercase tracking-tighter italic">V2.7b Alpha</div>
                   )}
                 </div>
 
-                <p className="text-[#888888] text-sm mb-8 leading-relaxed h-12">
+                <p className="text-zinc-500 text-xs mb-8 leading-relaxed h-10 font-medium">
                   {plan.desc}
                 </p>
 
-                <div className="space-y-4 mb-10 flex-grow">
+                <div className="space-y-3 mb-10 flex-grow">
                   {plan.features.map((feature, idx) => (
                     <div key={idx} className="flex items-start gap-3">
-                      <div className="mt-1 w-4 h-4 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                        <Zap size={10} className="text-blue-400" />
-                      </div>
-                      <span className="text-xs text-white/60 group-hover:text-white/80 transition-colors uppercase tracking-tight">{feature}</span>
+                      <div className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)] flex-shrink-0" />
+                      <span className="text-[10px] text-white/50 group-hover:text-white/90 transition-colors uppercase font-bold tracking-wider leading-none">
+                        {feature}
+                      </span>
                     </div>
                   ))}
                 </div>
 
                 <button 
                   onClick={() => handleAcquire(plan)}
-                  className={`w-full py-4 rounded-2xl font-bold transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden group/btn ${
+                  className={`w-full py-4 rounded-xl font-black text-[11px] uppercase tracking-[0.3em] transition-all duration-500 flex items-center justify-center gap-2 relative overflow-hidden group/btn ${
                     plan.popular 
-                    ? 'bg-white text-black hover:bg-neutral-200 shadow-[0_0_20px_rgba(255,255,255,0.1)]' 
+                    ? 'bg-blue-600 text-white hover:bg-blue-500 shadow-[0_0_30px_rgba(37,99,235,0.3)]' 
                     : plan.isComingSoon
-                    ? 'bg-amber-500/10 border border-amber-500/20 text-amber-500 hover:bg-amber-500/20'
-                    : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'
+                    ? 'bg-zinc-800/50 border border-zinc-700 text-zinc-500 cursor-not-allowed'
+                    : 'bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black shadow-xl hover:shadow-white/5'
                   }`}
+                  disabled={plan.isComingSoon}
                 >
-                  <span className="relative z-10">{plan.isComingSoon ? 'Notify Me' : 'Acquire License'}</span>
-                  {!plan.isComingSoon && <ArrowRight size={16} className="relative z-10 group-hover/btn:translate-x-1 transition-transform" />}
+                  <span className="relative z-10">{plan.isComingSoon ? 'Reserved' : 'Provision Logic'}</span>
+                  {!plan.isComingSoon && <ArrowRight size={14} className="relative z-10 group-hover/btn:translate-x-1 transition-transform" />}
                 </button>
               </motion.div>
             ))}

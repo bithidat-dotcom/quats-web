@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Press+Start+2P&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Outfit", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-game: "Press Start 2P", system-ui, sans-serif;
 }
 
 html {
