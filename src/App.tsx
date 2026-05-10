@@ -18,7 +18,7 @@ function ScrollToTop() {
   return null;
 }
 
-function SplashAnimation({ onComplete }: { onComplete: () => void }) {
+function SplashAnimation({ onComplete }: { onComplete: () => void; key?: string }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete();
@@ -64,17 +64,54 @@ function SplashAnimation({ onComplete }: { onComplete: () => void }) {
   );
 }
 
-function BackgroundAnimatedBlobs() {
+function GlobalBackground() {
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-black">
+      {/* Space Background Image */}
+      <div className="absolute inset-0">
+        <img 
+          src="https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0" 
+          alt="Space Background" 
+          className="w-full h-full object-cover opacity-40"
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black" />
+      </div>
+
+      {/* Shooting Stars Animation Layer */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{ x: "-10%", y: "-10%", opacity: 0 }}
+            animate={{ 
+              x: "110%", 
+              y: "110%", 
+              opacity: [0, 1, 1, 0],
+            }}
+            transition={{
+              duration: 2 + Math.random() * 4,
+              repeat: Infinity,
+              delay: Math.random() * 15,
+              ease: "linear"
+            }}
+            className="absolute w-[2px] h-[100px] bg-gradient-to-b from-white to-transparent rotate-45"
+            style={{
+              left: `${Math.random() * 120 - 10}%`,
+              top: `-${Math.random() * 30}%`
+            }}
+          />
+        ))}
+      </div>
+
       <motion.div
         animate={{
           x: [0, 200, -100, 0],
           y: [0, -200, 100, 0],
           scale: [1, 1.4, 0.8, 1]
         }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[10%] left-[15%] w-[400px] h-[400px] bg-green-500/20 rounded-full blur-[120px]"
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[10%] left-[15%] w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-[120px]"
       />
       <motion.div
         animate={{
@@ -82,8 +119,8 @@ function BackgroundAnimatedBlobs() {
           y: [0, 200, -150, 0],
           scale: [1, 0.7, 1.3, 1]
         }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-[20%] right-[10%] w-[500px] h-[500px] bg-emerald-500/20 rounded-full blur-[150px]"
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-[20%] right-[10%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[150px]"
       />
       <motion.div
         animate={{
@@ -91,17 +128,8 @@ function BackgroundAnimatedBlobs() {
           y: [0, 250, 100, 0],
           scale: [1, 1.5, 0.8, 1]
         }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/2 left-[40%] w-[600px] h-[600px] bg-teal-500/10 rounded-full blur-[150px]"
-      />
-      <motion.div
-        animate={{
-          x: [0, -150, 200, 0],
-          y: [0, -100, 250, 0],
-          scale: [1, 1.2, 0.9, 1]
-        }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[30%] left-[60%] w-[450px] h-[450px] bg-blue-500/20 rounded-full blur-[150px]"
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/2 left-[40%] w-[600px] h-[600px] bg-blue-400/5 rounded-full blur-[150px]"
       />
     </div>
   );
@@ -120,7 +148,7 @@ export default function App() {
         </AnimatePresence>
 
         <div className={`min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black relative flex flex-col transition-opacity duration-1000 ${showSplash ? 'opacity-0 h-screen overflow-hidden' : 'opacity-100'}`}>
-          <BackgroundAnimatedBlobs />
+          <GlobalBackground />
           
           {/* Decor line matched from theme */}
           <div className="fixed top-0 right-1/4 h-full w-[1px] bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none z-0" />

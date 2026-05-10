@@ -3,13 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Mail, MapPin, Phone, Instagram, Layers, Code2, Database, Cpu, Zap, LayoutTemplate, X, ExternalLink } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Logo } from '../components/Logo';
-
-interface Project {
-  title: string;
-  category: string;
-  img: string;
-  desc: string;
-}
+import { MiniGame } from '../components/MiniGame';
 
 export default function Home() {
   const { hash } = useLocation();
@@ -28,18 +22,7 @@ export default function Home() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-black">
-        {/* Space Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0" 
-            alt="Space Background" 
-            className="w-full h-full object-cover opacity-60"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black" />
-        </div>
-
+      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-transparent">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
         
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
@@ -279,132 +262,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Portfolio Showcase Section */}
-      <section className="py-32 border-t border-white/10 relative overflow-hidden bg-black/30">
+      {/* Mini-Game Section */}
+      <section className="py-32 border-b border-white/10 relative overflow-hidden bg-black/30">
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-            <div>
+            <div className="max-w-2xl">
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-[11px] uppercase tracking-[3px] text-[#888888] mb-4 font-semibold"
+                className="text-[10px] uppercase tracking-[3px] text-blue-400 mb-6 font-game"
               >
-                Live Deployments
+                [ CHALLENGE_01 ]
               </motion.div>
               <motion.h2 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-3xl md:text-5xl font-semibold tracking-tight uppercase tracking-[-1px]"
+                className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tighter uppercase font-game leading-tight"
               >
-                 Featured Projects
+                 System <br />
+                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-white to-blue-400/50">Maintenance</span>
               </motion.h2>
+              <p className="text-[#888888] text-[10px] font-game uppercase tracking-widest mt-6 opacity-60">
+                Play the simulation to unlock system blueprints.
+              </p>
             </div>
-            <motion.div
-               initial={{ opacity: 0, x: 20 }}
-               whileInView={{ opacity: 1, x: 0 }}
-               viewport={{ once: true }}
-            >
-              <Link to="/services" className="text-white border-b border-white hover:text-[#888888] hover:border-[#888888] pb-1 transition-all flex items-center gap-2 text-sm font-semibold uppercase tracking-widest">
-                View All Systems <ArrowRight size={16} />
-              </Link>
-            </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {[
-              { 
-                title: 'Dolfin Social Sentinel', 
-                category: '2.7b Market Master', 
-                img: 'https://images.unsplash.com/photo-1620712943543-bcc4628c7007?auto=format&fit=crop&w=1200&q=80',
-                desc: 'Autonomous marketing orchestration managing multi-channel social presence and client lead generation logic.'
-              },
-              { 
-                title: 'Nexus Control Core', 
-                category: 'PC Protocol 1.0', 
-                img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80',
-                desc: 'The foundational voice-command interface for computer task handling and system-level app navigation.'
-              },
-              { 
-                title: 'Ghost Telemetry Unit', 
-                category: '1.5 Performance Logic', 
-                img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
-                desc: 'Real-time CPU/RAM optimization and thermal monitoring interface for high-density multi-process systems.'
-              },
-              { 
-                title: 'Dolfin Pro Brain V2', 
-                category: '2.5b Self-Brain logic', 
-                img: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80',
-                desc: 'Total autonomous control authority featuring human-grade problem solving and emergency safety overrides.'
-              },
-              { 
-                title: 'Bio-Sync Terminal', 
-                category: 'System Integration', 
-                img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80',
-                desc: 'A unified control hub architected to bridge legacy mobile hardware with modern autonomous AI protocols.'
-              }
-            ].map((project, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: i * 0.2, ease: [0.22, 1, 0.36, 1] }}
-                className="group cursor-pointer relative"
-              >
-                <div className="relative rounded-[2.5rem] overflow-hidden mb-8 aspect-[4/3] border border-white/10 bg-[#0A0A0A] shadow-[0_30px_60px_-12px_rgba(0,0,0,0.5)]">
-                  {/* Subtle Inner Glow */}
-                  <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[2.5rem] pointer-events-none z-20" />
-                  
-                  {/* Glowing Edge Gradient */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-15 pointer-events-none">
-                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/80 to-transparent" />
-                    <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
-                  </div>
-                  
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-700 z-10" />
-                  
-                  <img src={project.img} alt={project.title} className="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-[2s] ease-[cubic-bezier(0.22,1,0.36,1)] grayscale-[0.2] group-hover:grayscale-0" />
-                  
-                  {/* Floating Content Overlay */}
-                  <div className="absolute inset-0 z-30 flex flex-col justify-end p-8">
-                    <motion.div 
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
-                    >
-                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 backdrop-blur-md mb-3">
-                         <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                         <span className="text-[9px] text-blue-400 font-black uppercase tracking-[0.2em]">{project.category}</span>
-                      </div>
-                      <h3 className="text-2xl font-bold text-white mb-2 tracking-tight group-hover:text-blue-400 transition-colors uppercase italic">{project.title}</h3>
-                      <p className="text-zinc-400 text-sm leading-relaxed max-w-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">{project.desc}</p>
-                    </motion.div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-between px-2">
-                  <div className="flex -space-x-2">
-                    {[1,2,3].map(n => (
-                      <div key={n} className="w-6 h-6 rounded-full border border-black bg-zinc-800 flex items-center justify-center overflow-hidden">
-                        <img src={`https://i.pravatar.cc/100?img=${n + (i*5)}`} className="w-full h-full object-cover opacity-60" />
-                      </div>
-                    ))}
-                    <div className="w-6 h-6 rounded-full border border-black bg-zinc-900 flex items-center justify-center text-[8px] text-white font-bold">
-                      +12
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.2em]">View Spec</span>
-                    <div className="w-12 h-12 rounded-2xl border border-white/5 bg-white/5 backdrop-blur-md flex items-center justify-center text-white transform group-hover:rotate-45 group-hover:bg-white group-hover:text-black transition-all duration-500">
-                      <ArrowRight size={20} />
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          <MiniGame />
         </div>
       </section>
 

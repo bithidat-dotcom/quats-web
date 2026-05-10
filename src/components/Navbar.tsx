@@ -42,8 +42,11 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
-            <Link to="/get-started" className="bg-white/10 border border-white/20 backdrop-blur-md text-white px-[20px] py-[10px] rounded text-[13px] font-semibold hover:bg-white hover:text-black transition-all flex items-center gap-2 ml-[12px] shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-              Get Started
+            <Link to="/get-started" className="relative group/gs ml-[12px]">
+              <div className="absolute inset-0 bg-zinc-600 rounded translate-y-1" />
+              <div className="relative bg-white text-black px-[18px] py-[8px] rounded text-[11px] font-game font-black hover:bg-neutral-200 active:translate-y-1 transition-all flex items-center gap-2 uppercase border-b-4 border-zinc-400 active:border-b-0">
+                Get Started
+              </div>
             </Link>
           </div>
 
@@ -62,8 +65,11 @@ export default function Navbar() {
                   {link.name}
                 </Link>
               ))}
-              <Link to="/get-started" onClick={() => setIsMobileMenuOpen(false)} className="bg-white/10 border border-white/20 backdrop-blur-md text-white px-6 py-4 rounded-full text-lg font-medium hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2 mt-4 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-                Get Started <ArrowRight size={20} />
+              <Link to="/get-started" onClick={() => setIsMobileMenuOpen(false)} className="relative group/gs w-full mt-4">
+                <div className="absolute inset-0 bg-zinc-600 rounded translate-y-1" />
+                <div className="relative bg-white text-black px-6 py-4 rounded text-[14px] font-game font-black hover:bg-neutral-200 active:translate-y-1 transition-all flex items-center justify-center gap-2 uppercase border-b-4 border-zinc-400 active:border-b-0">
+                  Get Started <ArrowRight size={16} />
+                </div>
               </Link>
             </div>
           </motion.div>

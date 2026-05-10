@@ -117,9 +117,9 @@ export default function Pricing() {
   };
 
   return (
-    <main className="pt-24 min-h-screen bg-black">
+    <main className="pt-24 min-h-screen bg-transparent">
       {/* Pricing Header */}
-      <section className="py-20 relative overflow-hidden">
+      <section className="py-20 relative overflow-hidden bg-transparent">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/[0.03] rounded-full blur-[120px] pointer-events-none" />
         
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
@@ -230,7 +230,7 @@ export default function Pricing() {
       </section>
 
       {/* License and Privacy Section */}
-      <section className="py-20 border-t border-white/5 bg-white/[0.01]">
+      <section className="py-20 border-t border-white/5 bg-transparent">
         <div className="container mx-auto px-6 max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
