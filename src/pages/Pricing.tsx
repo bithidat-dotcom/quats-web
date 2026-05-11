@@ -80,6 +80,21 @@ export default function Pricing() {
       border: 'border-purple-500/30'
     },
     {
+      tier: 'v1.0a',
+      name: 'Quats Browser',
+      price: '0',
+      desc: 'Our safest, full-private browsing infrastructure. Engineered for zero-tracking.',
+      features: [
+        'Quantum Privacy Shield',
+        'Built-in AI Assistant',
+        'Zero-Tracker Policy',
+        'Full Identity Isolation',
+        'Secure Identity Vault'
+      ],
+      gradient: 'from-blue-600 to-purple-600',
+      border: 'border-blue-400/30'
+    },
+    {
       tier: '2.7b',
       name: 'Market Master',
       isComingSoon: true,
@@ -147,7 +162,7 @@ export default function Pricing() {
             </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
             {plans.map((plan, i) => (
               <motion.div
                 key={i}

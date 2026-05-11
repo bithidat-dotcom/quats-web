@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Mail, MapPin, Phone, Instagram, Layers, Code2, Database, Cpu, Zap, LayoutTemplate, X, ExternalLink } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Logo } from '../components/Logo';
-import { MiniGame } from '../components/MiniGame';
 
 export default function Home() {
   const { hash } = useLocation();
@@ -191,13 +190,45 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full max-w-5xl mx-auto rounded-[2.5rem] overflow-hidden border border-white/10 bg-black/40 shadow-2xl"
+            className="w-full max-w-5xl mx-auto rounded-[2.5rem] overflow-hidden border border-white/10 bg-black/40 shadow-2xl mb-24"
           >
             <img 
               src="https://i.postimg.cc/kG6VHZfH/make-a-video-where-a-202605081208.jpg" 
               alt="System Architecture Visualization" 
               className="w-full h-auto object-cover"
             />
+          </motion.div>
+
+          {/* Code Store Access Section */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="max-w-5xl mx-auto p-8 md:p-12 rounded-[2.5rem] bg-gradient-to-br from-blue-900/20 via-zinc-900/50 to-purple-900/20 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-12 mb-24 relative overflow-hidden"
+          >
+            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
+            <div className="relative z-10 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/10 mb-4">
+                <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+                <span className="text-[8px] font-game text-[#888888] tracking-widest uppercase">Open Source Core</span>
+              </div>
+              <h2 className="text-2xl md:text-4xl font-game font-black tracking-tighter uppercase mb-4">
+                QUATS CODE <span className="text-blue-500">STORE</span>
+              </h2>
+              <p className="text-[#888888] text-[10px] font-game uppercase tracking-[1px] leading-relaxed max-w-md">
+                Browse our internal engineering modules with live GitHub integration. Search 100M+ global repositories, copy patterns, and deploy pre-optimized code blocks for your next digital expansion.
+              </p>
+            </div>
+            
+            <Link 
+              to="/code-store" 
+              className="relative group/code-btn w-full md:w-auto"
+            >
+              <div className="absolute inset-0 bg-blue-600 rounded translate-y-1" />
+              <div className="relative bg-white text-black px-10 py-5 rounded text-[12px] font-game font-black hover:bg-neutral-200 active:translate-y-1 transition-all flex items-center justify-center gap-3 uppercase border-b-4 border-zinc-400 active:border-b-0 shadow-[0_0_30px_rgba(37,99,235,0.2)]">
+                ENTER CODE VAULT <Code2 size={18} className="group-hover/code-btn:rotate-12 transition-transform" />
+              </div>
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -262,35 +293,71 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Mini-Game Section */}
-      <section className="py-32 border-b border-white/10 relative overflow-hidden bg-black/30">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-            <div className="max-w-2xl">
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="text-[10px] uppercase tracking-[3px] text-blue-400 mb-6 font-game"
-              >
-                [ CHALLENGE_01 ]
-              </motion.div>
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tighter uppercase font-game leading-tight"
-              >
-                 System <br />
-                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-white to-blue-400/50">Maintenance</span>
-              </motion.h2>
-              <p className="text-[#888888] text-[10px] font-game uppercase tracking-widest mt-6 opacity-60">
-                Play the simulation to unlock system blueprints.
-              </p>
-            </div>
-          </div>
+      {/* Company Showcase Section */}
+      <section className="py-24 border-b border-white/10 relative overflow-hidden bg-black/30">
+        <div className="container mx-auto px-6 max-w-7xl mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <h2 className="text-xl md:text-2xl font-black tracking-tighter uppercase font-game text-white mb-4">
+              Integrated with Industry Leaders
+            </h2>
+            <div className="w-20 h-1 bg-blue-500 mx-auto rounded-full mb-8" />
+          </motion.div>
+        </div>
 
-          <MiniGame />
+        {/* Marquee Ticker */}
+        <div className="relative flex overflow-x-hidden border-y border-white/5 py-16 bg-white/[0.02]">
+          {[1, 2].map((groupIndex) => {
+            const companies = [
+              { name: "Google AI Studio", icon: "googlecloud" },
+              { name: "VS Code", icon: "visualstudiocode", customIcon: "https://www.svgrepo.com/show/342347/visual-studio-code.svg" },
+              { name: "Node.js", icon: "nodedotjs" },
+              { name: "Vercel", icon: "vercel" },
+              { name: "Netlify", icon: "netlify" },
+              { name: "GitHub", icon: "github" },
+              { name: "Google AI Studio", icon: "googlecloud" },
+              { name: "VS Code", icon: "visualstudiocode", customIcon: "https://www.svgrepo.com/show/342347/visual-studio-code.svg" },
+              { name: "Node.js", icon: "nodedotjs" },
+              { name: "Vercel", icon: "vercel" },
+              { name: "Netlify", icon: "netlify" },
+              { name: "GitHub", icon: "github" },
+            ];
+
+            return (
+              <motion.div
+                key={groupIndex}
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{
+                  duration: 30,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+                className={`flex whitespace-nowrap gap-10 items-center ${groupIndex === 2 ? 'absolute top-16 left-0 pl-10' : ''}`}
+              >
+                {companies.map((company, i) => (
+                  <div
+                    key={`${groupIndex}-${i}`}
+                    className="inline-flex items-center gap-5 px-10 py-6 bg-white rounded-2xl shadow-[0_10px_40px_rgba(255,255,255,0.1)] border-2 border-white group hover:-translate-y-2 transition-all duration-500 cursor-default min-w-[280px] justify-center"
+                  >
+                    <div className="w-8 h-8 flex items-center justify-center shrink-0">
+                      <img 
+                        src={company.customIcon || `https://cdn.simpleicons.org/${company.icon}/000000`} 
+                        alt={company.name}
+                        className="w-full h-full grayscale-0 group-hover:scale-125 transition-transform duration-500 object-contain"
+                      />
+                    </div>
+                    <span className="text-black font-game text-[14px] font-black uppercase tracking-tight">
+                      {company.name}
+                    </span>
+                  </div>
+                ))}
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 

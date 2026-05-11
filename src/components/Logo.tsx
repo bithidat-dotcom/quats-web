@@ -11,9 +11,9 @@ export function Logo({ className = "w-10 h-10" }: { className?: string }) {
         <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent -translate-x-[100%] group-hover/logo:translate-x-[100%] transition-transform duration-1000 z-10" />
         
         <img 
-          src="https://res-console.cloudinary.com/dth2lmrkl/thumbnails/transform/v1/image/upload/Y19maWxsLGhfMjAwLHdfMjAw/v1/RG1pdHJpX2RtaWlpaXRyaV9vbl9YXzFfczZ0b3N1/template_primary" 
+          src="https://res-console.cloudinary.com/df7jfonrv/thumbnails/transform/v1/image/upload/Y19maWxsLGhfMjAwLHdfMjAw/v1/RG1pdHJpX2RtaWlpaXRyaV9vbl9YXzFfbDJyNGIy/template_primary" 
           alt="Quats Logo" 
-          className="w-full h-full object-cover relative z-0 opacity-90 group-hover/logo:opacity-100 transition-opacity"
+          className="w-full h-full object-contain relative z-0 opacity-90 group-hover/logo:opacity-100 transition-opacity p-2"
           referrerPolicy="no-referrer"
         />
       </div>
