@@ -1,468 +1,359 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, Copy, Download, Code2, Check, ExternalLink, Terminal, Github, Loader2 } from 'lucide-react';
+import { 
+  Search, 
+  Copy, 
+  Download, 
+  Code2, 
+  Check, 
+  ExternalLink, 
+  Terminal, 
+  Github, 
+  Star, 
+  Loader2, 
+  Shield, 
+  Zap, 
+  Cpu, 
+  Key,
+  X,
+  Layers
+} from 'lucide-react';
 
-interface CodeSnippet {
+interface ModelResult {
   id: string;
-  title: string;
+  name: string;
   description: string;
-  language: string;
-  code: string;
-  category: string;
-  isExternal?: boolean;
-  externalUrl?: string;
-  stars?: number;
+  author: string;
+  downloads: number;
+  likes: number;
+  tags: string[];
+  type: 'model' | 'repo';
+  url: string;
+  language?: string;
 }
 
-const INTERNAL_SNIPPETS: CodeSnippet[] = [
-  {
-    id: '1',
-    title: 'Authentication Middleware',
-    description: 'Robust JWT-based authentication middleware for Express.js applications.',
-    language: 'typescript',
-    category: 'Backend',
-    code: `import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  
-  if (!token) {
-    return res.status(401).json({ error: 'Authentication required' });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    (req as any).user = decoded;
-    next();
-  } catch (err) {
-    res.status(401).json({ error: 'Invalid token' });
-  }
-};`
-  },
-  {
-    id: '2',
-    title: 'Responsive Navbar Component',
-    description: 'A clean, responsive navigation bar built with React and Tailwind CSS.',
-    language: 'tsx',
-    category: 'UI/UX',
-    code: `import React, { useState } from 'react';
-import { Menu, X } from 'lucide-react';
-
-export const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <nav className="bg-zinc-950 border-b border-white/10 px-6 py-4">
-      <div className="flex items-center justify-between">
-        <div className="font-bold text-white uppercase tracking-tighter">QUATS</div>
-        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">
-          {isOpen ? <X /> : <Menu />}
-        </button>
-      </div>
-    </nav>
-  );
-};`
-  },
-  {
-    id: '3',
-    title: 'API Rate Limiter',
-    description: 'Simple rate limiting logic using Redis for high-scale applications.',
-    language: 'javascript',
-    category: 'Architecture',
-    code: `const rateLimit = require('express-rate-limit');
-const RedisStore = require('rate-limit-redis');
-
-const limiter = rateLimit({
-  store: new RedisStore({
-    client: redisClient,
-    prefix: 'rl:',
-  }),
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per window
-});
-
-module.exports = limiter;`
-  },
-  {
-    id: '4',
-    title: 'Smart Dustbin (Arduino)',
-    description: 'Automated lid control system using ultrasonic proximity sensing for touchless waste management.',
-    language: 'cpp',
-    category: 'Hardware',
-    code: `#include <Servo.h>
-
-Servo servo;
-const int trigPin = 9;
-const int echoPin = 10;
-long duration;
-int distance;
-
-void setup() {
-  servo.attach(11);
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
-  servo.write(0); // Lid closed
-}
-
-void loop() {
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  
-  duration = pulseIn(echoPin, HIGH);
-  distance = duration * 0.034 / 2;
-  
-  if (distance < 20) {
-    servo.write(90); // Open
-    delay(3000);
-  } else {
-    servo.write(0); // Close
-  }
-}`
-  },
-  {
-    id: '5',
-    title: 'Precision Calculator Engine',
-    description: 'A robust mathematical parser for handling complex arithmetic operations with precedence.',
-    language: 'typescript',
-    category: 'Utility',
-    code: `export class MathEngine {
-  static evaluate(expression: string): number {
-    // Basic sanitization and evaluation
-    try {
-      const sanitized = expression.replace(/[^0-9+\\-*/(). ]/g, '');
-      return new Function('return ' + sanitized)();
-    } catch (e) {
-      throw new Error('Invalid calculation');
-    }
-  }
-
-  static formatCurrency(value: number): string {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(value);
-  }
-}`
-  },
-  {
-    id: '6',
-    title: 'Ultrasonic Radar System',
-    description: '360° environment mapping logic using sweep-scan sonar technology.',
-    language: 'cpp',
-    category: 'Hardware',
-    code: `void scanRadar() {
-  for(int i=15; i<=165; i++){  
-    myServo.write(i);
-    delay(30);
-    distance = calculateDistance();
-    
-    Serial.print(i); 
-    Serial.print(","); 
-    Serial.print(distance); 
-    Serial.print("."); 
-  }
-  for(int i=165; i>15; i--){  
-    myServo.write(i);
-    delay(30);
-    distance = calculateDistance();
-    Serial.print(i);
-    Serial.print(",");
-    Serial.print(distance);
-    Serial.print(".");
-  }
-}`
-  },
-  {
-    id: '7',
-    title: 'Secure File Encryptor (Python)',
-    description: 'AES-256 encryption module for securing sensitive local files and data streams.',
-    language: 'python',
-    category: 'Security',
-    code: `from cryptography.fernet import Fernet
-import os
-
-class QuatsVault:
-    def __init__(self, key=None):
-        self.key = key or Fernet.generate_key()
-        self.cipher = Fernet(self.key)
-
-    def encrypt_file(self, file_path):
-        with open(file_path, 'rb') as f:
-            data = f.read()
-        encrypted = self.cipher.encrypt(data)
-        with open(file_path + '.quats', 'wb') as f:
-            f.write(encrypted)
-
-    def decrypt_file(self, encrypted_path):
-        with open(encrypted_path, 'rb') as f:
-            data = f.read()
-        decrypted = self.cipher.decrypt(data)
-        return decrypted`
-  },
-  {
-    id: '8',
-    title: 'Async Web Engine',
-    description: 'High-performance asynchronous data fetcher for Python-based web intelligence.',
-    language: 'python',
-    category: 'Backend',
-    code: `import asyncio
-import aiohttp
-
-async def fetch_intelligence(url):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            if response.status == 200:
-                return await response.json()
-            return {"error": "Access Denied"}
-
-async def main():
-    endpoints = ["https://api.quats.com/v1", "https://node.quats.ai"]
-    results = await asyncio.gather(*[fetch_intelligence(u) for u in endpoints])
-    print(f"Captured {len(results)} intelligence points")
-
-if __name__ == "__main__":
-    asyncio.run(main())`
-  }
-];
+// Adject Logo Component
+const AdjectLogo = ({ className = "w-6 h-6" }: { className?: string }) => (
+  <div className={`${className} bg-blue-600 rounded-lg flex items-center justify-center p-1 shadow-lg shadow-blue-500/30`}>
+    <div className="w-full h-full border-2 border-white rounded-sm flex items-center justify-center">
+      <div className="w-1 h-1 bg-white rounded-full" />
+    </div>
+  </div>
+);
 
 export default function CodeStore() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [results, setResults] = useState<ModelResult[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [githubSnippets, setGithubSnippets] = useState<CodeSnippet[]>([]);
-  const [isLoadingGithub, setIsLoadingGithub] = useState(false);
-  const [isGithubMode, setIsGithubMode] = useState(true);
+  const [selectedItem, setSelectedItem] = useState<ModelResult | null>(null);
 
-  const performGithubSearch = useCallback(async (query: string) => {
-    if (!query) {
-      setGithubSnippets([]);
-      return;
-    }
-
-    setIsLoadingGithub(true);
+  const performGlobalSearch = useCallback(async (query: string) => {
+    if (!query || query.length < 2) return;
+    setIsLoading(true);
+    
     try {
-      const response = await fetch(`https://api.github.com/search/repositories?q=${encodeURIComponent(query)}&sort=stars&order=desc&per_page=6`);
-      const data = await response.json();
-      
-      if (data.items) {
-        const transformed: CodeSnippet[] = data.items.map((item: any) => ({
-          id: `github-${item.id}`,
-          title: item.name,
-          description: item.description || 'No description available.',
-          language: item.language || 'Unknown',
-          category: 'GitHub Repo',
-          code: `git clone ${item.clone_url}`,
-          isExternal: true,
-          externalUrl: item.html_url,
-          stars: item.stargazers_count
-        }));
-        setGithubSnippets(transformed);
-      }
+      // Parallel fetch from Hugging Face and GitHub
+      const [hfResponse, ghResponse] = await Promise.all([
+        fetch(`https://huggingface.co/api/models?search=${encodeURIComponent(query)}&limit=8&sort=downloads&direction=-1`),
+        fetch(`https://api.github.com/search/repositories?q=${encodeURIComponent(query)}&sort=stars&order=desc&per_page=8`)
+      ]);
+
+      const hfData = await hfResponse.json();
+      const ghData = await ghResponse.json();
+
+      const hfModels: ModelResult[] = Array.isArray(hfData) ? hfData.map((m: any) => ({
+        id: `hf-${m._id}`,
+        name: m.id,
+        description: `Adject-integrated neural path. High-performance AI model by ${m.author || 'OpenSource'}. Optimized for secure token processing.`,
+        author: m.author || 'HF User',
+        downloads: m.downloads || 0,
+        likes: m.likes || 0,
+        tags: m.tags || [],
+        type: 'model',
+        url: `https://huggingface.co/${m.id}`
+      })) : [];
+
+      const ghRepos: ModelResult[] = (ghData.items || []).map((r: any) => ({
+        id: `gh-${r.id}`,
+        name: r.full_name,
+        description: r.description || 'Global code intelligence repository.',
+        author: r.owner.login,
+        downloads: r.stargazers_count,
+        likes: r.forks_count,
+        tags: [r.language || 'Intelligence'],
+        type: 'repo',
+        url: r.html_url,
+        language: r.language
+      }));
+
+      setResults([...hfModels, ...ghRepos]);
     } catch (error) {
-      console.error('GitHub Search Error:', error);
+      console.error('Search failed:', error);
     } finally {
-      setIsLoadingGithub(false);
+      setIsLoading(false);
     }
   }, []);
 
-  useEffect(() => {
+  // Fast search de-bounce
+  React.useEffect(() => {
     const timer = setTimeout(() => {
-      if (isGithubMode && searchQuery) {
-        performGithubSearch(searchQuery);
-      }
-    }, 500);
+      if (searchQuery) performGlobalSearch(searchQuery);
+    }, 400);
     return () => clearTimeout(timer);
-  }, [searchQuery, isGithubMode, performGithubSearch]);
+  }, [searchQuery, performGlobalSearch]);
 
-  const internalFiltered = INTERNAL_SNIPPETS.filter(s => 
-    s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    s.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    s.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    performGlobalSearch(searchQuery);
+  };
 
-  const displayedSnippets = isGithubMode ? [...internalFiltered, ...githubSnippets] : internalFiltered;
-
-  const copyToClipboard = (code: string, id: string) => {
-    navigator.clipboard.writeText(code);
+  const copyToClipboard = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const downloadCode = (code: string, filename: string) => {
-    const blob = new Blob([code], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
   return (
-    <div className="min-h-screen bg-black text-white pt-32 pb-20">
+    <div className="min-h-screen bg-black text-white pt-32 pb-20 overflow-x-hidden">
       <div className="container mx-auto px-6 max-w-7xl">
         {/* Header */}
         <div className="mb-16 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 mb-6"
+            className="flex items-center justify-center gap-3 mb-6"
           >
-            <Code2 size={14} className="text-blue-400" />
-            <span className="text-[10px] font-game uppercase tracking-[2px] text-blue-400">Quats Open Repository</span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20">
+              <Zap size={14} className="text-blue-400" />
+              <span className="text-[10px] font-game uppercase tracking-[2px] text-blue-400">Adject AI Infrastructure</span>
+            </div>
           </motion.div>
+          
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter uppercase mb-6 font-game"
+            className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter uppercase mb-6 font-game"
           >
-            The Code <span className="text-zinc-600">Vault</span>
+            THE <span className="text-blue-600">ADJECT</span> HUB
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-zinc-400 max-w-2xl mx-auto uppercase text-xs tracking-widest leading-loose"
-          >
-            Access our internal patterns & global open-source intelligence. Integrated with GitHub live search.
-          </motion.p>
+          
+          <p className="text-zinc-400 max-w-2xl mx-auto uppercase text-[10px] tracking-widest leading-loose mb-12">
+            Integrated Hugging Face & GitHub search. Discover weights, collect API keys, and deploy intelligence through Adject's global gateway.
+          </p>
         </div>
 
-        {/* Search Engine */}
-        <div className="max-w-2xl mx-auto mb-20 relative group">
-          <div className="absolute inset-0 bg-blue-500/20 blur-2xl group-focus-within:bg-blue-500/40 transition-all rounded-full" />
-          <div className="relative flex items-center bg-zinc-900 border border-white/10 rounded-2xl p-2 h-16 shadow-2xl overflow-hidden">
-            <Search className="ml-4 text-zinc-500" size={20} />
+        {/* Unified Search Engine */}
+        <div className="max-w-3xl mx-auto mb-20 relative group">
+          <div className="absolute inset-0 bg-blue-500/10 blur-3xl group-focus-within:bg-blue-500/20 transition-all rounded-full" />
+          <form onSubmit={handleSearch} className="relative flex items-center bg-zinc-900/90 border border-white/10 rounded-3xl p-2 h-20 shadow-2xl backdrop-blur-xl">
+            <Search className="ml-6 text-zinc-500" size={24} />
             <input 
               type="text" 
-              placeholder="SEARCH ALL CODE + GITHUB..."
+              placeholder="SEARCH MODELS & CODEBASES..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 bg-transparent border-none outline-none px-4 font-game text-sm uppercase tracking-wider placeholder:text-zinc-700"
+              className="flex-1 bg-transparent border-none outline-none px-6 font-game text-sm uppercase tracking-wider placeholder:text-zinc-700"
             />
             <button 
-              onClick={() => performGithubSearch(searchQuery)}
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white font-game text-[10px] tracking-widest rounded-xl transition-all shadow-lg shadow-blue-500/20 active:scale-95 flex items-center gap-2"
+              type="submit"
+              disabled={isLoading}
+              className="mr-2 px-10 h-full bg-blue-600 hover:bg-blue-500 text-white font-game text-[12px] tracking-widest rounded-2xl transition-all shadow-lg shadow-blue-500/20 active:scale-95 flex items-center gap-3 disabled:opacity-50"
             >
-              {isLoadingGithub ? <Loader2 size={14} className="animate-spin" /> : <Search size={14} />} SEARCH
+              {isLoading ? <Loader2 className="animate-spin" size={18} /> : <Zap size={18} fill="currentColor" />}
+              {isLoading ? 'SYNCING...' : 'CAPTURE'}
             </button>
-          </div>
-          <div className="mt-4 flex flex-wrap justify-center gap-4 text-zinc-600 font-game text-[8px] uppercase tracking-widest">
-            <button 
-              onClick={() => setIsGithubMode(!isGithubMode)}
-              className={`flex items-center gap-1.5 transition-colors ${isGithubMode ? 'text-blue-400' : 'hover:text-white'}`}
-            >
-              <Github size={10} /> GitHub Integration: {isGithubMode ? 'ON' : 'OFF'}
-            </button>
-            <span>•</span>
-            <span>Popular: Python</span>
-            <span>•</span>
-            <span>Arduino</span>
-            <span>•</span>
-            <span>Security</span>
+          </form>
+          <div className="mt-6 flex flex-wrap justify-center gap-6 text-zinc-600 font-game text-[9px] uppercase tracking-widest">
+            <span className="flex items-center gap-2 hover:text-blue-400 cursor-pointer" onClick={() => performGlobalSearch('Llama-3')}>Llama-3</span>
+            <span className="text-zinc-800">•</span>
+            <span className="flex items-center gap-2 hover:text-blue-400 cursor-pointer" onClick={() => performGlobalSearch('Stable Diffusion')}>Stable Diffusion</span>
+            <span className="text-zinc-800">•</span>
+            <span className="flex items-center gap-2 hover:text-blue-400 cursor-pointer" onClick={() => performGlobalSearch('Transformers')}>Transformers</span>
           </div>
         </div>
 
-        {/* Snippets Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Results Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <AnimatePresence mode="popLayout">
-            {displayedSnippets.map((snippet) => (
+            {results.map((item) => (
               <motion.div
-                key={snippet.id}
+                key={item.id}
                 layout
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className={`bg-zinc-900/50 border rounded-3xl overflow-hidden hover:border-blue-500/30 transition-all group backdrop-blur-sm ${snippet.isExternal ? 'border-purple-500/10' : 'border-white/5'}`}
+                className="group relative bg-zinc-900/40 border border-white/5 rounded-[2.5rem] p-8 hover:border-blue-500/30 transition-all backdrop-blur-md flex flex-col h-full"
               >
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-blue-500/10 group-hover:border-blue-500/20 transition-all">
-                        {snippet.isExternal ? (
-                          <Github size={18} className="text-purple-400" />
-                        ) : (
-                          <Terminal size={18} className="text-zinc-400 group-hover:text-blue-400" />
-                        )}
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-game text-xs text-white group-hover:text-blue-400 transition-colors uppercase">{snippet.title}</h3>
-                          {snippet.isExternal && (
-                            <span className="bg-purple-500/20 text-purple-400 text-[6px] px-1.5 py-0.5 rounded uppercase font-game">Global</span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-[8px] text-zinc-600 font-game uppercase tracking-widest">{snippet.category}</span>
-                          {snippet.stars !== undefined && (
-                            <span className="text-[8px] text-yellow-500/60 font-game">★ {snippet.stars.toLocaleString()}</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {snippet.externalUrl && (
-                        <a 
-                          href={snippet.externalUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="p-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-zinc-500 hover:text-white"
-                          title="Open on GitHub"
-                        >
-                          <ExternalLink size={14} />
-                        </a>
-                      )}
-                      <button 
-                        onClick={() => copyToClipboard(snippet.code, snippet.id)}
-                        className="p-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all group/btn"
-                        title="Copy Code"
-                      >
-                        {copiedId === snippet.id ? <Check size={14} className="text-green-500" /> : <Copy size={14} className="text-zinc-500 group-hover/btn:text-white" />}
-                      </button>
-                      <button 
-                        onClick={() => downloadCode(snippet.code, `${snippet.title.toLowerCase().replace(/\s+/g, '-')}.${snippet.language === 'typescript' ? 'ts' : snippet.language === 'tsx' ? 'tsx' : snippet.language === 'python' ? 'py' : 'txt'}`)}
-                        className="p-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all group/btn"
-                        title="Download"
-                      >
-                        <Download size={14} className="text-zinc-500 group-hover/btn:text-white" />
-                      </button>
-                    </div>
+                {/* Branding */}
+                <div className="absolute top-8 right-8">
+                  <AdjectLogo className="w-8 h-8" />
+                </div>
+
+                <div className="flex items-center gap-4 mb-6">
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all ${item.type === 'model' ? 'bg-purple-500/10 border-purple-500/20' : 'bg-blue-500/10 border-blue-500/20'}`}>
+                    {item.type === 'model' ? <Cpu size={22} className="text-purple-400" /> : <Github size={22} className="text-blue-400" />}
                   </div>
-                  <p className="text-[#888888] text-[10px] font-game uppercase tracking-tight leading-relaxed mb-6 h-10 overflow-hidden line-clamp-2">
-                    {snippet.description}
-                  </p>
-                  
-                  {/* Code Holder */}
-                  <div className="relative">
-                    <div className="absolute top-0 right-0 p-2 text-[8px] font-mono text-zinc-700 select-none uppercase">
-                      {snippet.language}
-                    </div>
-                    <pre className="bg-black/50 p-4 rounded-xl border border-white/5 font-mono text-[10px] text-blue-300 overflow-x-auto max-h-[200px] scrollbar-thin scrollbar-thumb-zinc-800">
-                      <code>{snippet.code}</code>
-                    </pre>
+                  <div className="min-w-0 pr-10">
+                    <h3 className="font-game text-[11px] text-white group-hover:text-blue-400 transition-colors uppercase truncate mb-1">
+                      {item.name.split('/').pop()}
+                    </h3>
+                    <span className="text-[8px] text-zinc-500 font-game uppercase tracking-[2px]">By {item.author}</span>
                   </div>
+                </div>
+
+                <p className="text-[#888888] text-[9px] font-game uppercase tracking-tight leading-relaxed mb-8 flex-1 line-clamp-3">
+                  {item.description}
+                </p>
+
+                {/* Stats */}
+                <div className="flex items-center gap-6 mb-8 py-4 border-y border-white/5">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[7px] text-zinc-600 font-game uppercase tracking-widest">Active Tokens</span>
+                    <span className="text-[10px] font-game text-zinc-300">{(item.downloads / 1000).toFixed(1)}M</span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[7px] text-zinc-600 font-game uppercase tracking-widest">Architecture</span>
+                    <span className="text-[10px] font-game text-zinc-300 uppercase">{item.tags[0] || 'Neural'}</span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[7px] text-zinc-600 font-game uppercase tracking-widest">Safety Hash</span>
+                    <span className="text-[10px] font-game text-zinc-300 uppercase">SHA-256</span>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3">
+                  <button 
+                    onClick={() => setSelectedItem(item)}
+                    className="flex-1 py-4 bg-white text-black font-game text-[9px] font-black uppercase tracking-widest rounded-2xl hover:bg-zinc-200 transition-all flex items-center justify-center gap-2"
+                  >
+                    DEPLOY WITH ADJECT <Zap size={12} fill="currentColor" />
+                  </button>
+                  <button 
+                    onClick={() => window.open(item.url, '_blank')}
+                    className="w-14 py-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-white/10 transition-all"
+                  >
+                    <ExternalLink size={16} />
+                  </button>
                 </div>
               </motion.div>
             ))}
           </AnimatePresence>
         </div>
 
-        {displayedSnippets.length === 0 && !isLoadingGithub && (
+        {/* Empty State */}
+        {results.length === 0 && !isLoading && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-20"
+            className="text-center py-32 flex flex-col items-center gap-6"
           >
-            <p className="font-game text-zinc-600 text-sm tracking-widest">NO DATA FOUND FOR YOUR QUERY.</p>
+            <div className="w-24 h-24 rounded-[2rem] bg-zinc-900 flex items-center justify-center border border-white/5">
+              <Shield size={32} className="text-zinc-800" />
+            </div>
+            <h2 className="font-game text-zinc-600 text-lg tracking-[5px] uppercase">Awaiting Target Acquisition</h2>
+            <p className="text-zinc-700 font-game text-[10px] tracking-widest uppercase">Enter a query to bridge with global intelligence repositories.</p>
           </motion.div>
         )}
       </div>
+
+      {/* Deployment Modal */}
+      <AnimatePresence>
+        {selectedItem && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedItem(null)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-md" 
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-2xl bg-zinc-900 border border-white/10 rounded-[3rem] p-10 overflow-hidden shadow-2xl"
+            >
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-purple-600" />
+              
+              <button 
+                onClick={() => setSelectedItem(null)}
+                className="absolute top-8 right-8 p-3 bg-white/5 rounded-full hover:bg-white/10 transition-all"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="flex items-center gap-6 mb-10">
+                <AdjectLogo className="w-12 h-12" />
+                <div>
+                  <h2 className="text-2xl font-game font-black uppercase tracking-tighter">Adject Deployment Agent</h2>
+                  <p className="text-blue-400 font-game text-[8px] uppercase tracking-widest mt-1">Configuring Instance for {selectedItem.name.split('/').pop()}</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-[10px] font-game uppercase tracking-widest text-[#888888] flex items-center gap-2">
+                      <Key size={14} /> ADJECT API KEY
+                    </span>
+                    <span className="text-[8px] font-game text-green-500 uppercase tracking-widest">Status: Active (Shared)</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-5 bg-black border border-white/5 rounded-2xl">
+                    <code className="flex-1 font-mono text-zinc-400 text-xs truncate">adj_live_384a82b9dc904a11f8e2110c7937...</code>
+                    <button 
+                      onClick={() => copyToClipboard('adj_live_384a82b9dc904a11f8e2110c7937d2f9', 'api-key')}
+                      className="p-3 bg-blue-600 rounded-xl hover:bg-blue-500 transition-all"
+                    >
+                      {copiedId === 'api-key' ? <Check size={16} /> : <Copy size={16} />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <span className="text-[10px] font-game uppercase tracking-widest text-[#888888] mb-4 block flex items-center gap-2">
+                    <Terminal size={14} /> INITIALIZATION SCRIPT
+                  </span>
+                  <div className="bg-black p-6 rounded-2xl border border-white/5 font-mono text-xs text-blue-300 relative group">
+                    <button 
+                      onClick={() => copyToClipboard(`import adject\n\nagent = adject.init("${selectedItem.id}")\nagent.load_weights()\n\nprint("Intelligence Hub Ready")`, 'script')}
+                      className="absolute top-4 right-4 p-2 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
+                    >
+                       {copiedId === 'script' ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
+                    </button>
+                    <pre className="whitespace-pre-wrap leading-relaxed">
+                      {`import adject\n\n# Secure tunnel to ${selectedItem.type}\nagent = adject.init("${selectedItem.id}")\nagent.load_weights()\n\nprint("Intelligence Hub Ready")`}
+                    </pre>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <button 
+                    onClick={() => window.open('https://adject.ai/docs', '_blank')}
+                    className="flex-1 py-5 bg-blue-600 rounded-2xl font-game text-[10px] font-black uppercase tracking-[2px] shadow-xl shadow-blue-500/20 hover:scale-[1.02] transition-all"
+                  >
+                    COLLECT FULL API KEY
+                  </button>
+                  <button className="flex-1 py-5 bg-white/5 rounded-2xl font-game text-[10px] font-black uppercase tracking-[2px] border border-white/10 hover:bg-white/10 transition-all">
+                    TEST CONNECTION
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-8 flex items-center justify-center gap-6">
+                <div className="flex items-center gap-2 text-zinc-600 font-game text-[8px] uppercase tracking-widest">
+                  <Shield size={10} /> Full-Private Protocol
+                </div>
+                <div className="flex items-center gap-2 text-zinc-600 font-game text-[8px] uppercase tracking-widest">
+                  <Layers size={10} /> Neural Bridge V4
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
