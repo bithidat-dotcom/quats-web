@@ -20,7 +20,6 @@ export default function Navbar() {
     { name: 'Our Story & Services', href: '/services' },
     { name: 'Pricing', href: '/pricing' },
     { name: 'Code Store', href: '/code-store' },
-    { name: 'Studio', href: '/studio' },
   ];
 
   return (

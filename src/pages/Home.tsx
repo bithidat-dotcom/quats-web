@@ -60,13 +60,13 @@ export default function Home() {
             >
               <Link
                 to="/services"
-                className="bg-white text-black px-[36px] py-[16px] rounded text-[16px] font-semibold hover:bg-neutral-200 transition-all flex items-center justify-center gap-2"
+                className="bg-white text-black px-6 py-4 md:px-[36px] md:py-[16px] rounded text-sm md:text-[16px] font-semibold hover:bg-neutral-200 transition-all flex items-center justify-center gap-2"
               >
                 Discover Our Services
               </Link>
               <Link
                 to="/pricing"
-                className="bg-white/10 border border-white/20 backdrop-blur-md text-white px-[36px] py-[16px] rounded text-[16px] font-semibold hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2"
+                className="bg-white/10 border border-white/20 backdrop-blur-md text-white px-6 py-4 md:px-[36px] md:py-[16px] rounded text-sm md:text-[16px] font-semibold hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2"
               >
                 Dolfin Agent Pricing
               </Link>
@@ -255,7 +255,7 @@ export default function Home() {
             </motion.h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 relative">
             {/* Background Base Line */}
             <div className="hidden md:block absolute top-[45px] left-[10%] right-[10%] h-[1px] bg-white/10 z-0" />
             
@@ -310,21 +310,22 @@ export default function Home() {
         </div>
 
         {/* Marquee Ticker */}
-        <div className="relative flex overflow-x-hidden border-y border-white/5 py-16 bg-white/[0.02]">
+        <div className="relative flex overflow-x-hidden border-y border-white/5 py-16 bg-white/[0.02] before:absolute before:left-0 before:top-0 before:z-20 before:h-full before:w-64 before:bg-gradient-to-r before:from-black before:to-transparent after:absolute after:right-0 after:top-0 after:z-20 after:h-full after:w-64 after:bg-gradient-to-l after:from-black after:to-transparent">
           {[1, 2].map((groupIndex) => {
             const companies = [
-              { name: "Google AI Studio", icon: "googlecloud" },
-              { name: "VS Code", icon: "visualstudiocode", customIcon: "https://www.svgrepo.com/show/342347/visual-studio-code.svg" },
-              { name: "Node.js", icon: "nodedotjs" },
+              { name: "Hugging Face", icon: "huggingface", customIcon: "https://huggingface.co/front/assets/huggingface_logo-noborder.svg" },
+              { name: "Supabase", icon: "supabase", customIcon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSibJKkb3zuWNXb3h-Zdu6lNYQYN59aim1x0w&s" },
+              { name: "Bolt", icon: "bolt", customIcon: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/bolt-ai-builder-icon.png" },
+              { name: "Lovable", icon: "lovable", customIcon: "https://lovable.dev/img/logo/lovable-icon-bg-light.png" },
+              { name: "Replit", icon: "replit", customIcon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIML4Si6wtiuFjg4AElfP1A9MZGUDfEG1R9A&s" },
+              { name: "Arena.ai", icon: "arena", customIcon: "https://yt3.googleusercontent.com/ZXvxog8BCpdyAcaEK50zi2t8-vAvRPMcKtOy2AnTFssNmiYrpo2FDns2TjMdbXEeh7fh6yQ9GA=s900-c-k-c0x00ffffff-no-rj" },
+              { name: "OpenRouter", icon: "openrouter", customIcon: "https://openrouter.ai/favicon.ico" },
+              { name: "GitHub", icon: "github" },
               { name: "Vercel", icon: "vercel" },
               { name: "Netlify", icon: "netlify" },
-              { name: "GitHub", icon: "github" },
-              { name: "Google AI Studio", icon: "googlecloud" },
+              { name: "Figma", icon: "figma" },
+              { name: "Prisma", icon: "prisma", customIcon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6jOZdGIBFG5JdX1vIIihAhbeJ3ugyYtBegQ&s" },
               { name: "VS Code", icon: "visualstudiocode", customIcon: "https://www.svgrepo.com/show/342347/visual-studio-code.svg" },
-              { name: "Node.js", icon: "nodedotjs" },
-              { name: "Vercel", icon: "vercel" },
-              { name: "Netlify", icon: "netlify" },
-              { name: "GitHub", icon: "github" },
             ];
 
             return (
@@ -341,7 +342,7 @@ export default function Home() {
                 {companies.map((company, i) => (
                   <div
                     key={`${groupIndex}-${i}`}
-                    className="inline-flex items-center gap-5 px-10 py-6 bg-white rounded-2xl shadow-[0_10px_40px_rgba(255,255,255,0.1)] border-2 border-white group hover:-translate-y-2 transition-all duration-500 cursor-default min-w-[280px] justify-center"
+                    className="inline-flex items-center gap-3 md:gap-5 px-6 md:px-10 py-4 md:py-6 bg-white rounded-2xl shadow-[0_10px_40px_rgba(255,255,255,0.1)] border-2 border-white group hover:-translate-y-2 transition-all duration-500 cursor-default min-w-[220px] md:min-w-[280px] justify-center"
                   >
                     <div className="w-8 h-8 flex items-center justify-center shrink-0">
                       <img 

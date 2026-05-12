@@ -32,13 +32,13 @@ export default function Pricing() {
       tier: '1.0',
       name: 'Basic Protocol',
       price: '25',
-      desc: 'Essential PC automation and voice orchestration.',
+      desc: 'Essential PC automation and smart orchestration.',
       features: [
         'Computer Task Handling',
-        'Jarvis Voice Interface',
+        'Jarvis Interface',
         'Browser Application Control',
         'System App Navigation',
-        'Unified Voice Commands'
+        'Unified Commands'
       ],
       gradient: 'from-zinc-500 to-zinc-800',
       border: 'border-white/5'
@@ -86,7 +86,7 @@ export default function Pricing() {
       desc: 'Our safest, full-private browsing infrastructure. Engineered for zero-tracking.',
       features: [
         'Quantum Privacy Shield',
-        'Built-in AI Assistant',
+        'Strategic Advisor (ASA)',
         'Zero-Tracker Policy',
         'Full Identity Isolation',
         'Secure Identity Vault'
@@ -103,7 +103,7 @@ export default function Pricing() {
         'Facebook Post Automation',
         'Client Messaging Logic',
         'Market Trend Analysis',
-        'Brand Voice Synthesis',
+        'Brand Identity Synthesis',
         'Autonomous Lead Gen',
         'Omnichannel Sync',
         '24/7 Market Sentry'
