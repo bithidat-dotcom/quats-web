@@ -15,6 +15,8 @@ export default function JobPage() {
   const [loading, setLoading] = useState(true);
   const [showPostModal, setShowPostModal] = useState(false);
   const [dbError, setDbError] = useState<string | null>(null);
+  const [source, setSource] = useState<'supabase' | 'linkedin'>('supabase');
+  const [externalError, setExternalError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     company_name: '', job_title: '', contact_number: '', salary: '', 
     location: '', employee_number: '', description: '', image_url: ''
@@ -40,44 +42,68 @@ export default function JobPage() {
   useEffect(() => {
     fetchJobs();
     
-    // Subscribe to realtime changes
-    const channel = supabase
-      .channel('public:jobs')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'jobs' }, () => {
-        fetchJobs();
-      })
-      .subscribe();
+    // Subscribe to realtime changes only for postgres
+    let channel: any;
+    if (source === 'supabase') {
+      channel = supabase
+        .channel('public:jobs')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'jobs' }, () => {
+          fetchJobs();
+        })
+        .subscribe();
+    }
 
     return () => {
-      supabase.removeChannel(channel);
+      if (channel) supabase.removeChannel(channel);
     };
-  }, []);
+  }, [source]); // Re-fetch when source changes
 
-  const fetchJobs = async () => {
+  const fetchJobs = async (customQuery?: string) => {
     setLoading(true);
+    setDbError(null);
+    setExternalError(null);
+    setJobs([]);
     
-    try {
-      const { data, error } = await supabase
-        .from('jobs')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) {                
-        if (error.code === 'PGRST205') {
-          setDbError("The 'jobs' table is missing. Setup required.");
-        } else {
-          console.error('Error fetching jobs:', error);
+    if (source === 'linkedin') {
+      try {
+        const q = customQuery || searchQuery || "developer";
+        const res = await fetch(`/api/jobs/external?q=${encodeURIComponent(q)}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to fetch external jobs');
+        setJobs(data.jobs || []);
+      } catch (err: any) {
+        console.error("External fetch failed", err);
+        setExternalError(err.message);
+      }
+    } else {
+      try {
+        const { data, error } = await supabase
+          .from('jobs')
+          .select('*')
+          .order('created_at', { ascending: false });
+        
+        if (error) {                
+          if (error.code === 'PGRST205') {
+            setDbError("The 'jobs' table is missing. Setup required.");
+          } else {
+            console.error('Error fetching jobs:', error);
+          }
         }
-        setJobs([]);
+        else {
+          setJobs(data || []); 
+        }
+      } catch (err) {
+        console.error("Fetch failed", err);
       }
-      else {
-        setJobs(data || []); 
-      }
-    } catch (err) {
-      console.error("Fetch failed", err);
-      setJobs([]);
     }
     setLoading(false);
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (source === 'linkedin') {
+      fetchJobs(searchQuery);
+    }
   };
 
   const filteredJobs = jobs.filter(job => 
@@ -107,6 +133,28 @@ export default function JobPage() {
           </p>
         </motion.div>
         
+        {/* Source Toggle */}
+        <div className="flex justify-center mb-10 relative z-20">
+          <div className="bg-white/5 border border-white/10 p-1 rounded-2xl flex backdrop-blur-md relative overflow-hidden">
+             {/* Simple active background marker using layout transition */}
+             <div 
+               className={`absolute inset-y-1 w-1/2 bg-blue-500 rounded-xl transition-all duration-300 ease-out z-0 ${source === 'supabase' ? 'left-1' : 'left-[calc(50%-4px)]'}`}
+             />
+             <button
+                className={`flex-1 px-8 py-3 text-xs font-black uppercase tracking-wider font-game relative z-10 transition-colors ${source === 'supabase' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}
+                onClick={() => setSource('supabase')}
+             >
+                Internal Network
+             </button>
+             <button
+                className={`flex-1 px-8 py-3 text-xs font-black uppercase tracking-wider font-game relative z-10 transition-colors ${source === 'linkedin' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}
+                onClick={() => setSource('linkedin')}
+             >
+                External (LinkedIn)
+             </button>
+          </div>
+        </div>
+
         {/* Search Engine & Post Button */}
         <motion.div 
            initial={{ opacity: 0, y: 20 }}
@@ -114,7 +162,7 @@ export default function JobPage() {
            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
            className="flex flex-col sm:flex-row gap-4 mb-16 relative z-20"
         >
-          <form className="flex-1 flex items-center bg-white/[0.02] border border-white/10 rounded-2xl p-2 shadow-[0_0_30px_rgba(0,0,0,0.5)] backdrop-blur-xl" onSubmit={(e) => e.preventDefault()}>
+          <form className="flex-1 flex items-center bg-white/[0.02] border border-white/10 rounded-2xl p-2 shadow-[0_0_30px_rgba(0,0,0,0.5)] backdrop-blur-xl" onSubmit={handleSearchSubmit}>
             <Search className="ml-4 text-zinc-500" size={20} />
             <input 
               type="text" 
@@ -124,12 +172,14 @@ export default function JobPage() {
             />
             <button type="submit" className="bg-white text-black px-6 py-3 rounded-xl font-game text-[10px] md:text-xs font-black hover:bg-neutral-200 transition-all uppercase tracking-wider">SEARCH</button>
           </form>
-          <button 
-            className="w-full sm:w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:bg-blue-500 hover:scale-105 transition-all shrink-0 border border-blue-400/30 text-white"
-            onClick={() => setShowPostModal(true)}
-          >
-            <Plus size={24} />
-          </button>
+          {source === 'supabase' && (
+            <button 
+              className="w-full sm:w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:bg-blue-500 hover:scale-105 transition-all shrink-0 border border-blue-400/30 text-white"
+              onClick={() => setShowPostModal(true)}
+            >
+              <Plus size={24} />
+            </button>
+          )}
         </motion.div>
 
         {/* Post Job Modal */}
@@ -177,7 +227,7 @@ export default function JobPage() {
 
         {/* Job Grid */}
         <div className="grid md:grid-cols-2 gap-6 relative z-10">
-          {dbError && (
+          {dbError && source === 'supabase' && (
             <div className="col-span-1 md:col-span-2 p-6 border border-red-500/30 rounded-2xl bg-red-500/10 mb-6">
               <h3 className="text-red-400 font-bold mb-2 font-game uppercase tracking-wider flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" /> DATABASE SETUP REQUIRED
@@ -201,13 +251,24 @@ export default function JobPage() {
               </div>
             </div>
           )}
-          {loading && jobs.length === 0 && !dbError && (
+          {externalError && source === 'linkedin' && (
+            <div className="col-span-1 md:col-span-2 p-6 border border-red-500/30 rounded-2xl bg-red-500/10 mb-6 flex flex-col items-center text-center">
+              <h3 className="text-red-400 font-bold mb-2 font-game uppercase tracking-wider">
+                External API Error
+              </h3>
+              <p className="text-red-300 text-sm mb-4">{externalError}</p>
+              <p className="text-zinc-400 text-xs mt-2">
+                Note: Configure the `LINKEDIN_API_KEY` in your environment to fetch real data from external APIs like RapidAPI's LinkedIn job scraper.
+              </p>
+            </div>
+          )}
+          {loading && jobs.length === 0 && !dbError && !externalError && (
             <div className="col-span-1 md:col-span-2 py-20 text-center flex flex-col items-center justify-center">
               <Loader2 className="animate-spin text-blue-500 mb-4" size={32} />
               <p className="text-[#888888] font-game text-xs uppercase tracking-widest">Scanning network...</p>
             </div>
           )}
-          {!loading && jobs.length === 0 && !dbError && (
+          {!loading && jobs.length === 0 && !dbError && !externalError && (
             <div className="col-span-1 md:col-span-2 py-20 text-center border border-white/5 rounded-2xl bg-white/[0.02]">
               <p className="text-[#888888] font-game text-xs uppercase tracking-widest">No active missions available.</p>
               <p className="text-zinc-500 font-mono text-xs mt-2">Initialize a new post to populate the network.</p>
