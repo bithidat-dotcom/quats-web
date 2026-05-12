@@ -15,7 +15,6 @@ export default function JobPage() {
   const [loading, setLoading] = useState(true);
   const [showPostModal, setShowPostModal] = useState(false);
   const [dbError, setDbError] = useState<string | null>(null);
-  const [source, setSource] = useState<'supabase' | 'linkedin'>('supabase');
   const [activeFilter, setActiveFilter] = useState<'all'|'safe'|'popular'|'new'>('all');
   const [formData, setFormData] = useState({
     company_name: '', job_title: '', contact_number: '', salary: '', 
@@ -42,108 +41,61 @@ export default function JobPage() {
   useEffect(() => {
     fetchJobs();
     
-    // Subscribe to realtime changes only for postgres
-    let channel: any;
-    if (source === 'supabase') {
-      channel = supabase
-        .channel('public:jobs')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'jobs' }, () => {
-          fetchJobs();
-        })
-        .subscribe();
-    }
+    // Subscribe to realtime changes
+    const channel = supabase
+      .channel('public:jobs')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'jobs' }, () => {
+        fetchJobs();
+      })
+      .subscribe();
 
     return () => {
-      if (channel) supabase.removeChannel(channel);
+      supabase.removeChannel(channel);
     };
-  }, [source]); // Re-fetch when source changes
+  }, []);
 
-  const fetchJobs = async (customQuery?: string) => {
+  const fetchJobs = async () => {
     setLoading(true);
     setDbError(null);
     setJobs([]);
     
-    if (source === 'linkedin') {
-      try {
-        const q = customQuery || searchQuery || "developer";
-        const res = await fetch(`/api/jobs/external?q=${encodeURIComponent(q)}`);
-        
-        if (!res.ok) {
-          // Fallback to mock data if backend isn't available (e.g. on Vercel static deployments)
-          throw new Error('Fallback to mock');
+    try {
+      const { data, error } = await supabase
+        .from('jobs')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) {                
+        if (error.code === 'PGRST205') {
+          setDbError("The 'jobs' table is missing. Setup required.");
+        } else {
+          console.error('Error fetching jobs:', error);
         }
-        const data = await res.json();
-        setJobs(data.jobs || []);
-      } catch (err) {
-        // Fallback Mock Data for LinkedIn
-        const q = customQuery || searchQuery || "developer";
-        setJobs([
-          {
-            id: 'ext-1',
-            company_name: 'Microsoft (LinkedIn)',
-            job_title: `Senior ${q} Engineer`,
-            contact_number: 'Apply via external link',
-            salary: '$150k - $200k',
-            location: 'Redmond, WA',
-            employee_number: '10k+',
-            description: `This is a job fetched from an external API (simulating LinkedIn Jobs). We are seeking a ${q} expert.`,
-            image_url: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=100&h=100&fit=crop',
-            ai_tag: 'popular'
-          },
-          {
-            id: 'ext-2',
-            company_name: 'Google (LinkedIn)',
-            job_title: `${q} Developer`,
-            contact_number: 'Apply via external link',
-            salary: '$140k - $190k',
-            location: 'Mountain View, CA',
-            employee_number: '10k+',
-            description: `Search team is expanding. Fetching external data requires API credentials successfully passed.`,
-            image_url: 'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=100&h=100&fit=crop',
-            ai_tag: 'safe'
-          }
-        ]);
       }
-    } else {
-      try {
-        const { data, error } = await supabase
-          .from('jobs')
-          .select('*')
-          .order('created_at', { ascending: false });
-        
-        if (error) {                
-          if (error.code === 'PGRST205') {
-            setDbError("The 'jobs' table is missing. Setup required.");
-          } else {
-            console.error('Error fetching jobs:', error);
-          }
-        }
-        else {
-          // Enhance supabase jobs with our mock AI algorithm tags
-          const tags = ['new', 'safe', 'popular'];
-          const enhancedJobs = (data || []).map((job, idx) => ({
-             ...job,
-             ai_tag: tags[idx % tags.length]
-          }));
-          setJobs(enhancedJobs); 
-        }
-      } catch (err) {
-        console.error("Fetch failed", err);
+      else {
+        // Enhance supabase jobs with our mock AI algorithm tags
+        const tags = ['new', 'safe', 'popular'];
+        const enhancedJobs = (data || []).map((job, idx) => ({
+           ...job,
+           ai_tag: tags[idx % tags.length]
+        }));
+        setJobs(enhancedJobs); 
       }
+    } catch (err) {
+      console.error("Fetch failed", err);
     }
     setLoading(false);
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (source === 'linkedin') {
-      fetchJobs(searchQuery);
-    }
   };
 
   const filteredJobs = jobs.filter(job => {
-    const matchesSearch = job.job_title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          job.company_name.toLowerCase().includes(searchQuery.toLowerCase());
+    const title = job.job_title || '';
+    const company = job.company_name || '';
+    const matchesSearch = title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          company.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesFilter = activeFilter === 'all' || job.ai_tag === activeFilter;
     return matchesSearch && matchesFilter;
   });
@@ -169,28 +121,6 @@ export default function JobPage() {
             Discover and recruit top talent across global digital architectures.
           </p>
         </motion.div>
-        
-        {/* Source Toggle */}
-        <div className="flex justify-center mb-10 relative z-20">
-          <div className="bg-white/5 border border-white/10 p-1 rounded-2xl flex backdrop-blur-md relative overflow-hidden">
-             {/* Simple active background marker using layout transition */}
-             <div 
-               className={`absolute inset-y-1 w-1/2 bg-blue-500 rounded-xl transition-all duration-300 ease-out z-0 ${source === 'supabase' ? 'left-1' : 'left-[calc(50%-4px)]'}`}
-             />
-             <button
-                className={`flex-1 px-8 py-3 text-xs font-black uppercase tracking-wider font-game relative z-10 transition-colors ${source === 'supabase' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}
-                onClick={() => setSource('supabase')}
-             >
-                Internal Network
-             </button>
-             <button
-                className={`flex-1 px-8 py-3 text-xs font-black uppercase tracking-wider font-game relative z-10 transition-colors ${source === 'linkedin' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}
-                onClick={() => setSource('linkedin')}
-             >
-                External (LinkedIn)
-             </button>
-          </div>
-        </div>
 
         {/* Search Engine & Post Button */}
         <motion.div 
@@ -210,14 +140,12 @@ export default function JobPage() {
               />
               <button type="submit" className="bg-white text-black px-6 py-3 rounded-xl font-game text-[10px] md:text-xs font-black hover:bg-neutral-200 transition-all uppercase tracking-wider">SEARCH</button>
             </form>
-            {source === 'supabase' && (
-              <button 
-                className="w-full sm:w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:bg-blue-500 hover:scale-105 transition-all shrink-0 border border-blue-400/30 text-white"
-                onClick={() => setShowPostModal(true)}
-              >
-                <Plus size={24} />
-              </button>
-            )}
+            <button 
+              className="w-full sm:w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:bg-blue-500 hover:scale-105 transition-all shrink-0 border border-blue-400/30 text-white"
+              onClick={() => setShowPostModal(true)}
+            >
+              <Plus size={24} />
+            </button>
           </div>
           
           {/* AI Algorithmic Filters */}
@@ -295,7 +223,7 @@ export default function JobPage() {
 
         {/* Job Grid */}
         <div className="grid md:grid-cols-2 gap-6 relative z-10">
-          {dbError && source === 'supabase' && (
+          {dbError && (
             <div className="col-span-1 md:col-span-2 p-6 border border-red-500/30 rounded-2xl bg-red-500/10 mb-6">
               <h3 className="text-red-400 font-bold mb-2 font-game uppercase tracking-wider flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" /> DATABASE SETUP REQUIRED
