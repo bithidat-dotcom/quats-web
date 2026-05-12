@@ -10,6 +10,7 @@ import Services from './pages/Services';
 import GetStarted from './pages/GetStarted';
 import Pricing from './pages/Pricing';
 import CodeStore from './pages/CodeStore';
+import Studio from './pages/Studio';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -163,6 +164,7 @@ export default function App() {
                 <Route path="/get-started" element={<GetStarted />} />
                 <Route path="/pricing" element={<Pricing />} />
                 <Route path="/code-store" element={<CodeStore />} />
+                <Route path="/studio" element={<Studio />} />
               </Routes>
             </div>
             <Footer />

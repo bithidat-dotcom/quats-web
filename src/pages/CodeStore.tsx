@@ -20,7 +20,8 @@ import {
   Send,
   MessageCircle,
   Database,
-  ArrowDownToLine
+  ArrowDownToLine,
+  Layers
 } from 'lucide-react';
 
 interface ModelResult {
