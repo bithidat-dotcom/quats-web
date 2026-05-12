@@ -6,6 +6,13 @@
   --font-game: "Press Start 2P", system-ui, sans-serif;
 }
 
+:root {
+  /* Talento Tech Theme */
+  --color-talento-primary: #0077b6; /* Professional Blue */
+  --color-talento-secondary: #00b4d8; /* Bright Blue/Teal */
+  --color-talento-background: #03045e; /* Deep Navy */
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -43,7 +50,7 @@ html {
 }
 
 body {
-  background-color: #000000;
+  background-color: var(--color-talento-background);
   color: #ffffff;
   font-family: var(--font-sans);
 }

@@ -12,6 +12,7 @@ import Pricing from './pages/Pricing';
 import CodeStore from './pages/CodeStore';
 import AIAssistant from './components/AIAssistant';
 import ScrollToTopButton from './components/ScrollToTopButton';
+import Job from './pages/Job';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -165,6 +166,7 @@ export default function App() {
                 <Route path="/get-started" element={<GetStarted />} />
                 <Route path="/pricing" element={<Pricing />} />
                 <Route path="/code-store" element={<CodeStore />} />
+                <Route path="/job" element={<Job />} />
               </Routes>
             </div>
             <Footer />

@@ -56,19 +56,19 @@ export default function Home() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex flex-col sm:flex-row gap-4 mt-10"
             >
               <Link
                 to="/services"
-                className="bg-white text-black px-6 py-4 md:px-[36px] md:py-[16px] rounded text-sm md:text-[16px] font-semibold hover:bg-neutral-200 transition-all flex items-center justify-center gap-2"
+                className="bg-white text-black px-[36px] py-[16px] rounded text-[16px] font-semibold hover:bg-neutral-200 transition-all flex items-center justify-center gap-2"
               >
-                Discover Our Services
+                I am a Company (Hire)
               </Link>
               <Link
                 to="/pricing"
-                className="bg-white/10 border border-white/20 backdrop-blur-md text-white px-6 py-4 md:px-[36px] md:py-[16px] rounded text-sm md:text-[16px] font-semibold hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2"
+                className="bg-white/10 border border-white/20 backdrop-blur-md text-white px-[36px] py-[16px] rounded text-[16px] font-semibold hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2"
               >
-                Dolfin Agent Pricing
+                I am a Job Seeker (Find Job)
               </Link>
             </motion.div>
           </div>
