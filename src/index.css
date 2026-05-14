@@ -44,6 +44,14 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.glass-premium {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8);
+}
+
 /* Antigravity Dot Pattern for Light Mode */
 .dot-pattern {
   background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 0);

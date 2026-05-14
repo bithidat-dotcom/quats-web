@@ -24,7 +24,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-[90%] max-w-5xl ml-[-5px] sm:ml-0 mt-[-6px] sm:mt-0">
+      <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-[96%] max-w-[1600px] mt-[-6px] sm:mt-0">
         <nav className="relative overflow-hidden group rounded-2xl">
           <div className="absolute inset-0 bg-white/5 backdrop-blur-md border border-white/10 sm:border-white/20 overflow-hidden" />
           

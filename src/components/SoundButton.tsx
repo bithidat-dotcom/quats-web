@@ -7,7 +7,7 @@ interface SoundButtonProps {
   to?: string;
   onClick?: () => void;
   className?: string;
-  variant?: 'primary' | 'secondary' | 'glass' | 'glow';
+  variant?: 'primary' | 'secondary' | 'glass' | 'glow' | 'glass-light';
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
 }
@@ -42,7 +42,7 @@ export default function SoundButton({
     secondary: "bg-blue-600 text-white hover:bg-blue-500 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-blue-500/20",
     glass: "glass text-white hover:bg-white/10 hover:scale-105 active:scale-95 border border-white/10 disabled:opacity-30 disabled:cursor-not-allowed",
     glow: "bg-blue-600 text-white hover:bg-blue-500 shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.6)] hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl",
-    'glass-light': "bg-white/40 backdrop-blur-md text-black border border-black/5 hover:bg-white/60 hover:scale-105 active:scale-95 shadow-lg shadow-black/5"
+    'glass-light': "bg-black/40 backdrop-blur-md text-white border border-white/10 hover:bg-white/10 hover:scale-105 active:scale-95 shadow-lg"
   };
 
   const combinedClassName = `${baseStyles} ${variants[variant]} ${className}`;
