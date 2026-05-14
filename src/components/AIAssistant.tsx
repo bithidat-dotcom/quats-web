@@ -58,7 +58,11 @@ export default function AIAssistant() {
 
     if (userMessage.toLowerCase().includes('generate image') || userMessage.toLowerCase().includes('create image')) {
       const prompt = userMessage.replace(/(generate|create) image/gi, '').trim();
-      setMessages(prev => [...prev, { role: 'assistant', content: `Generating image for "${prompt}"...`, image: `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}` }]);
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: `I've generated this for you: "${prompt}"`, 
+        image: `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}` 
+      }]);
       setIsLoading(false);
       return;
     }
@@ -127,8 +131,9 @@ export default function AIAssistant() {
             >
               {messages.map((msg, i) => (
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
                   key={i}
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >

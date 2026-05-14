@@ -113,10 +113,10 @@ export default function Home() {
                   &gt; Architected for rapid digital orchestration.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
-                  <SoundButton onClick={() => window.open('https://quats-app.netlify.app', '_blank')} variant="secondary" className="w-full sm:w-auto px-10 py-5 shadow-2xl shadow-blue-500/20 bg-white text-black hover:bg-zinc-200">
+                  <SoundButton onClick={() => window.open('https://quats-app.netlify.app', '_blank')} variant="secondary" className="w-full sm:w-auto px-10 py-5 shadow-2xl shadow-blue-500/20 bg-white text-black hover:bg-zinc-200 font-black">
                     Download Access <ArrowRight size={18} className="ml-2" />
                   </SoundButton>
-                  <SoundButton to="/get-started" variant="glass-light" className="w-full sm:w-auto px-10 py-5 border-white/10">
+                  <SoundButton to="/get-started" variant="glass-light" className="w-full sm:w-auto px-10 py-5 border-white/10 text-white hover:bg-white hover:text-black font-black">
                     Learn More
                   </SoundButton>
                 </div>
@@ -132,7 +132,7 @@ export default function Home() {
                  <img 
                    src="https://i.pinimg.com/1200x/ed/b0/1a/edb01ac6bff32feebdd5b1d43b25c373.jpg"
                    alt="App Preview"
-                   className="w-full h-full object-cover"
+                   className="w-full h-full object-cover filter grayscale brightness-0"
                  />
                  <div className="absolute inset-0 bg-blue-600/10 mix-blend-overlay" />
                </motion.div>
@@ -335,7 +335,7 @@ export default function Home() {
 
         {/* Marquee Ticker */}
         <div className="relative flex overflow-x-hidden border-y border-white/10 py-16 bg-black/20 before:absolute before:left-0 before:top-0 before:z-20 before:h-full before:w-64 before:bg-gradient-to-r before:from-black before:to-transparent after:absolute after:right-0 after:top-0 after:z-20 after:h-full after:w-64 after:bg-gradient-to-l after:from-black after:to-transparent">
-          {[1, 2].map((groupIndex) => {
+          {(() => {
             const companies = [
               { name: "Hugging Face", icon: "huggingface", customIcon: "https://huggingface.co/front/assets/huggingface_logo-noborder.svg" },
               { name: "Supabase", icon: "supabase", customIcon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSibJKkb3zuWNXb3h-Zdu6lNYQYN59aim1x0w&s" },
@@ -351,21 +351,20 @@ export default function Home() {
               { name: "Prisma", icon: "prisma", customIcon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6jOZdGIBFG5JdX1vIIihAhbeJ3ugyYtBegQ&s" },
               { name: "VS Code", icon: "visualstudiocode", customIcon: "https://www.svgrepo.com/show/342347/visual-studio-code.svg" },
             ];
-
+            
             return (
               <motion.div
-                key={groupIndex}
                 animate={{ x: ["0%", "-50%"] }}
                 transition={{
                   duration: 30,
                   repeat: Infinity,
                   ease: "linear",
                 }}
-                className={`flex whitespace-nowrap gap-10 items-center ${groupIndex === 2 ? 'absolute top-16 left-0 pl-10' : ''}`}
+                className="flex whitespace-nowrap gap-10 items-center"
               >
                 {companies.map((company, i) => (
                   <div
-                    key={`${groupIndex}-${i}`}
+                    key={i}
                     className="inline-flex items-center gap-3 md:gap-5 px-6 md:px-10 py-4 md:py-6 bg-white/5 rounded-none shadow-2xl border border-white/10 group hover:-translate-y-2 transition-all duration-500 cursor-default min-w-[220px] md:min-w-[280px] justify-center"
                   >
                     <div className="w-8 h-8 flex items-center justify-center shrink-0">
@@ -382,7 +381,7 @@ export default function Home() {
                 ))}
               </motion.div>
             );
-          })}
+          })()}
         </div>
       </section>
 
