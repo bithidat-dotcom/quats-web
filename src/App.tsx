@@ -23,6 +23,18 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  useEffect(() => {
+    try {
+      (window as any).adsbygoogle?.push({});
+    } catch (e: any) {
+      if (e?.message && e.message.includes("already have ads in them")) {
+        console.log("AdSense: Ad already initialized.");
+      } else {
+        console.error("AdSense error:", e);
+      }
+    }
+  }, []);
+
   return (
     <ReactLenis root>
       <BrowserRouter>
@@ -30,6 +42,14 @@ export default function App() {
         <div className="min-h-screen bg-transparent text-black font-sans selection:bg-blue-500 selection:text-white relative flex flex-col">
           <BackgroundDots />
           <Navbar />
+          <div className="ads-container">
+            <ins className="adsbygoogle"
+                 style={{display: 'block'}}
+                 data-ad-client="ca-pub-6889176306076912"
+                 data-ad-slot="REPLACE_WITH_YOUR_SLOT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+          </div>
           <div className="flex-1">
             <Routes>
               <Route path="/" element={<Home />} />
