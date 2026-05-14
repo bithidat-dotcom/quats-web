@@ -176,7 +176,7 @@ export default function AIAssistant() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="REQUEST STRATEGIC ORIENTATION..."
-                  className="flex-1 bg-transparent px-4 py-2 text-[10px] font-game text-white outline-none placeholder:text-zinc-800 uppercase tracking-widest"
+                  className="flex-1 bg-transparent px-4 py-2 text-[10px] font-game text-white outline-none placeholder:text-zinc-600 uppercase tracking-widest"
                 />
                 <button 
                   type="submit"

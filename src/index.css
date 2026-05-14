@@ -1,56 +1,59 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&family=Press+Start+2P&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Outfit", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --font-game: "Press Start 2P", system-ui, sans-serif;
 }
 
 :root {
-  /* Talento Tech Theme */
-  --color-talento-primary: #0077b6; /* Professional Blue */
-  --color-talento-secondary: #00b4d8; /* Bright Blue/Teal */
-  --color-talento-background: #03045e; /* Deep Navy */
+  --color-quats-primary: #3b82f6; 
+  --color-quats-bg: #ffffff;
 }
 
 html {
   scroll-behavior: smooth;
-}
-
-/* Custom Scrollbar Styles */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  transition: background 0.3s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(59, 130, 246, 0.5); /* Blue-500 with opacity */
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  background-color: var(--color-quats-bg);
 }
 
 body {
-  background-color: var(--color-talento-background);
-  color: #ffffff;
+  background-image: url('https://i.ibb.co.com/m5CwRPZ7/make-this-in-16-9-ratios-202605142229.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: var(--color-quats-bg);
+  color: #000000;
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* Glass Effect Utility for Light Mode */
+.glass {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.glass-hover:hover {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Antigravity Dot Pattern for Light Mode */
+.dot-pattern {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 0);
+  background-size: 40px 40px;
+}
+
+.bg-custom-image {
+  background-image: url('https://i.ibb.co.com/m5CwRPZ7/make-this-in-16-9-ratios-202605142229.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }

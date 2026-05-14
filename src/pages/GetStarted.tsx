@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Send, AlertCircle, Server } from 'lucide-react';
+import { Send, AlertCircle, Server, Code, Layers, Globe, ShieldCheck } from 'lucide-react';
+import SoundButton from '../components/SoundButton';
 
 export default function GetStarted() {
   const [formData, setFormData] = useState({
@@ -8,7 +9,7 @@ export default function GetStarted() {
     phone: '',
     websiteType: '',
     description: '',
-    hosting: 'Netlify',
+    hosting: 'Vercel',
     budget: 'No Budget',
     timeline: 'Flexible',
     services: [] as string[]
@@ -16,18 +17,25 @@ export default function GetStarted() {
   const [error, setError] = useState('');
 
   // Service Options
-  const serviceOptions = ['Web Development', 'Mobile App (iOS/Android)', 'UI/UX Design', 'E-Commerce Setup', 'Custom Backend/API', 'SEO Optimization'];
+  const serviceOptions = [
+    { label: 'Web Architecture', icon: <Globe size={14} /> },
+    { label: 'Intelligence Layer', icon: <Code size={14} /> },
+    { label: 'Interface Design', icon: <Layers size={14} /> },
+    { label: 'API Infrastructure', icon: <Server size={14} /> },
+    { label: 'Security Audit', icon: <ShieldCheck size={14} /> },
+    { label: 'Full Deployment', icon: <Globe size={14} /> }
+  ];
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleServiceToggle = (service: string) => {
+  const handleServiceToggle = (label: string) => {
     setFormData(prev => ({
       ...prev,
-      services: prev.services.includes(service) 
-        ? prev.services.filter(s => s !== service)
-        : [...prev.services, service]
+      services: prev.services.includes(label) 
+        ? prev.services.filter(s => s !== label)
+        : [...prev.services, label]
     }));
   };
 
@@ -41,12 +49,12 @@ export default function GetStarted() {
     
     // Validation
     if (!formData.name.trim() || !formData.phone.trim()) {
-      setError('Name and Phone Number are required to proceed.');
+      setError('Identity authentication failed. Name and Contact are required.');
       return;
     }
 
     // Construct WhatsApp message
-    const msg = `*New Project Request - Quats*\n\n*Client:* ${formData.name}\n*Phone:* ${formData.phone}\n\n*Platform Details:*\n- Type: ${formData.websiteType || 'Not specified'}\n- Services: ${formData.services.length > 0 ? formData.services.join(', ') : 'None selected'}\n- Hosting: ${formData.hosting}\n\n*Project Scope:*\n- Budget: ${formData.budget}\n- Timeline: ${formData.timeline}\n\n*Requirements:*\n${formData.description || 'Not specified'}`;
+    const msg = `*Operational Briefing - Quats*\n\n*Operator Identity:* ${formData.name}\n*Contact:* ${formData.phone}\n\n*Architecture Details:*\n- Category: ${formData.websiteType || 'General Architecture'}\n- Protocols: ${formData.services.length > 0 ? formData.services.join(', ') : 'Default'}\n- Deployment: ${formData.hosting}\n\n*Mission Logistics:*\n- Allocation: ${formData.budget}\n- Window: ${formData.timeline}\n\n*Strategic Requirements:*\n${formData.description || 'Standard implementation'}`;
     
     const encodedMsg = encodeURIComponent(msg);
     // Open WhatsApp
@@ -54,163 +62,197 @@ export default function GetStarted() {
   };
 
   return (
-    <main className="pt-32 pb-16 min-h-screen relative overflow-hidden">
-      {/* Heavy Glassmorphism Background Orbs */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/[0.04] rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[500px] h-[500px] bg-blue-500/[0.03] rounded-full blur-[100px] pointer-events-none" />
-
-      <div className="container mx-auto px-6 max-w-3xl relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight mb-4">Initialize Project</h1>
-          <p className="text-[#888888] text-[18px]">Configure your architectural requirements below.</p>
-        </motion.div>
+    <main className="pt-48 pb-32 min-h-screen">
+      <div className="container mx-auto px-6 max-w-4xl relative z-10">
+        <div className="text-center mb-24">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center font-black text-black text-3xl mx-auto mb-10 shadow-2xl"
+          >
+            Q
+          </motion.div>
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-7xl font-black tracking-tighter mb-8 uppercase italic text-[#f2eeee]"
+          >
+            Mission Start
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-[#eae1e1] text-sm md:text-base max-w-2xl mx-auto font-mono uppercase tracking-[0.2em] font-bold"
+          >
+            Configure your technical requirements to initiate deployment.
+          </motion.p>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)] p-8 md:p-12 rounded-[24px]"
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="glass p-8 md:p-16 rounded-none border border-black/5 shadow-2xl"
         >
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-12">
             {error && (
-              <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg flex items-center gap-3 backdrop-blur-md">
-                <AlertCircle size={20} />
-                <span className="text-sm">{error}</span>
-              </div>
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="bg-red-500/10 border border-red-500/20 text-red-500 px-6 py-4 rounded-2xl flex items-center gap-4 font-mono text-[10px] uppercase tracking-widest"
+              >
+                <AlertCircle size={18} />
+                <span>{error}</span>
+              </motion.div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-widest text-white/50">Full Name *</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f2eeee]">Identity Identifier</label>
                 <input 
                   type="text" 
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full bg-white/[0.02] border border-white/10 focus:border-white/40 focus:bg-white/[0.05] rounded-xl px-4 py-3 text-white outline-none transition-all backdrop-blur-sm" 
-                  placeholder="John Doe" 
+                  className="w-full glass bg-transparent px-6 py-4 rounded-none text-[#f2eeee] font-mono text-xs outline-none focus:border-blue-500/50 transition-all placeholder:text-zinc-500" 
+                  placeholder="SPECIFY NAME..." 
                 />
               </div>
-              <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-widest text-white/50">Phone Number *</label>
+              <div className="space-y-4">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f2eeee]">Communication Node</label>
                 <input 
                   type="tel" 
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full bg-white/[0.02] border border-white/10 focus:border-white/40 focus:bg-white/[0.05] rounded-xl px-4 py-3 text-white outline-none transition-all backdrop-blur-sm" 
-                  placeholder="+1 (555) 000-0000" 
+                  className="w-full glass bg-transparent px-6 py-4 rounded-none text-[#f2eeee] font-mono text-xs outline-none focus:border-blue-500/50 transition-all placeholder:text-zinc-500" 
+                  placeholder="+CONTACT..." 
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-semibold uppercase tracking-widest text-white/50">Website / App Type</label>
-              <input 
-                type="text" 
-                name="websiteType"
-                value={formData.websiteType}
-                onChange={handleChange}
-                className="w-full bg-white/[0.02] border border-white/10 focus:border-white/40 focus:bg-white/[0.05] rounded-xl px-4 py-3 text-white outline-none transition-all backdrop-blur-sm" 
-                placeholder="e.g., E-commerce, Portfolio, SaaS Platform" 
-              />
-            </div>
+              <div className="space-y-4">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f2eeee]">Architecture Type</label>
+                <input 
+                  type="text" 
+                  name="websiteType"
+                  value={formData.websiteType}
+                  onChange={handleChange}
+                  className="w-full glass bg-transparent px-6 py-4 rounded-none text-[#f7ebeb] font-mono text-xs outline-none focus:border-blue-500/50 transition-all placeholder:text-zinc-400" 
+                  placeholder="E.G., SAAS NODES, E-COMMERCE HUB, PORTFOLIO ARCHIVE..." 
+                />
+              </div>
 
             <div className="space-y-4">
-              <label className="text-xs font-semibold uppercase tracking-widest text-white/50">Core Services Required</label>
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f2eeee]">Core Protocols</label>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                 {serviceOptions.map(service => (
-                  <label key={service} className={`cursor-pointer flex items-center gap-3 p-3 rounded-xl border transition-all text-sm backdrop-blur-sm ${formData.services.includes(service) ? 'bg-white/10 border-white/40 text-white' : 'bg-white/[0.02] border-white/10 text-white/70 hover:border-white/20'}`}>
-                    <div className={`w-4 h-4 rounded-[4px] border flex items-center justify-center ${formData.services.includes(service) ? 'bg-white border-white' : 'border-white/30'}`}>
-                      {formData.services.includes(service) && <div className="w-2 h-2 bg-black rounded-[2px]"/>}
-                    </div>
-                    {service}
-                  </label>
+                  <button
+                    key={service.label}
+                    type="button"
+                    onClick={() => handleServiceToggle(service.label)}
+                    className={`flex items-center gap-3 p-4 rounded-none border transition-all text-[10px] font-black uppercase tracking-widest h-14 ${
+                      formData.services.includes(service.label) 
+                        ? 'bg-blue-600 border-blue-600 text-white shadow-[0_0_20px_rgba(37,99,235,0.4)]' 
+                        : 'bg-white/10 border-white/10 text-[#f2eeee] hover:bg-white/20'
+                    }`}
+                  >
+                    {service.icon}
+                    {service.label}
+                  </button>
                 ))}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-               <div className="space-y-4">
-                <label className="text-xs font-semibold uppercase tracking-widest text-white/50">Estimated Budget</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+               <div className="space-y-6">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f2eeee]">Resource Allocation</label>
                 <div className="grid grid-cols-2 gap-3">
-                  {['Under $1k', '$1k - $3k', '$3k - $10k', '$10k+', 'No Budget'].map((budget, idx) => (
-                    <label key={budget} className={`cursor-pointer flex items-center justify-center text-center p-3 rounded-xl border transition-all text-sm backdrop-blur-sm ${formData.budget === budget ? 'bg-white/10 border-white/40 text-white shadow-[0_0_15px_rgba(255,255,255,0.05)]' : 'bg-white/[0.02] border-white/10 text-white/70 hover:border-white/20 hover:text-white'} ${budget === 'No Budget' ? 'col-span-2' : ''}`}>
-                      <input 
-                        type="radio" 
-                        name="budget" 
-                        value={budget} 
-                        checked={formData.budget === budget} 
-                        onChange={handleChange} 
-                        className="sr-only" 
-                      />
+                  {['Under $1k', '$1k - $3k', '$3k - $10k', '$10k+', 'Flexible'].map((budget) => (
+                    <button
+                      key={budget}
+                      type="button"
+                      onClick={() => setFormData({...formData, budget})}
+                      className={`p-4 rounded-2xl border transition-all text-[10px] font-black uppercase tracking-widest ${
+                        formData.budget === budget 
+                          ? 'bg-white/30 border-white/40 text-white' 
+                          : 'bg-white/10 border-white/10 text-[#f2eeee] hover:bg-white/20'
+                      }`}
+                    >
                       {budget}
-                    </label>
+                    </button>
                   ))}
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <label className="text-xs font-semibold uppercase tracking-widest text-white/50">Timeline Setup</label>
+              <div className="space-y-6">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f2eeee]">Temporal Window</label>
                  <div className="grid grid-cols-2 gap-3">
-                  {['Rush (< 1mo)', '1 - 3 months', '3 - 6 months', 'Flexible'].map(timeline => (
-                    <label key={timeline} className={`cursor-pointer flex items-center justify-center text-center p-3 rounded-xl border transition-all text-sm backdrop-blur-sm ${formData.timeline === timeline ? 'bg-white/10 border-white/40 text-white shadow-[0_0_15px_rgba(255,255,255,0.05)]' : 'bg-white/[0.02] border-white/10 text-white/70 hover:border-white/20 hover:text-white'}`}>
-                      <input 
-                        type="radio" 
-                        name="timeline" 
-                        value={timeline} 
-                        checked={formData.timeline === timeline} 
-                        onChange={handleChange} 
-                        className="sr-only" 
-                      />
+                  {['Rush (< 1mo)', '1 - 3 months', '3 - 6 months', 'Continuous'].map(timeline => (
+                    <button
+                      key={timeline}
+                      type="button"
+                      onClick={() => setFormData({...formData, timeline})}
+                      className={`p-4 rounded-2xl border transition-all text-[10px] font-black uppercase tracking-widest ${
+                        formData.timeline === timeline 
+                          ? 'bg-white/30 border-white/40 text-white' 
+                          : 'bg-white/10 border-white/10 text-[#f2eeee] hover:bg-white/20'
+                      }`}
+                    >
                       {timeline}
-                    </label>
+                    </button>
                   ))}
                 </div>
               </div>
             </div>
 
-            <div className="space-y-3">
-              <label className="text-xs font-semibold uppercase tracking-widest text-white/50 flex items-center gap-2">
-                <Server size={14}/> Preferred Hosting Infrastructure
-              </label>
+            <div className="space-y-6">
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f2eeee]">Deployment Infrastructure</label>
               <div className="grid grid-cols-2 gap-4">
-                <label className={`cursor-pointer rounded-xl border p-4 transition-all backdrop-blur-sm ${formData.hosting === 'Netlify' ? 'bg-white/10 border-white/40' : 'bg-white/[0.02] border-white/10 hover:border-white/20'}`}>
-                  <input type="radio" name="hosting" value="Netlify" checked={formData.hosting === 'Netlify'} onChange={handleChange} className="sr-only" />
-                  <div className="font-medium text-white">Netlify Hosting</div>
-                  <div className="text-xs text-[#888888] mt-1">Optimized for React/Frontend</div>
-                </label>
-                <label className={`cursor-pointer rounded-xl border p-4 transition-all backdrop-blur-sm ${formData.hosting === 'Vercel' ? 'bg-white/10 border-white/40' : 'bg-white/[0.02] border-white/10 hover:border-white/20'}`}>
-                  <input type="radio" name="hosting" value="Vercel" checked={formData.hosting === 'Vercel'} onChange={handleChange} className="sr-only" />
-                  <div className="font-medium text-white">Vercel Hosting</div>
-                  <div className="text-xs text-[#888888] mt-1">High-performance edge network</div>
-                </label>
+                {[
+                  { id: 'Vercel', desc: 'Edge Protocol Optimization' },
+                  { id: 'Netlify', desc: 'Symmetric Continuous Sync' }
+                ].map(host => (
+                  <button
+                    key={host.id}
+                    type="button"
+                    onClick={() => setFormData({...formData, hosting: host.id})}
+                    className={`flex flex-col text-left p-6 rounded-none border transition-all ${
+                      formData.hosting === host.id 
+                        ? 'bg-white/30 border-white/20 ring-1 ring-white/10' 
+                        : 'bg-white/10 border-white/10 hover:bg-white/20'
+                    }`}
+                  >
+                    <span className={`text-[10px] font-black uppercase tracking-widest mb-1 ${formData.hosting === host.id ? 'text-white' : 'text-[#f2eeee]'}`}>{host.id}</span>
+                    <span className="text-[8px] font-mono text-[#f2eeee] font-bold uppercase tracking-wider">{host.desc}</span>
+                  </button>
+                ))}
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-semibold uppercase tracking-widest text-white/50">Customization Requirements</label>
+            <div className="space-y-4">
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f2eeee]">Mission Description</label>
               <textarea 
                 name="description"
                 rows={5} 
                 value={formData.description}
                 onChange={handleChange}
-                className="w-full bg-white/[0.02] border border-white/10 focus:border-white/40 focus:bg-white/[0.05] rounded-xl px-4 py-3 text-white outline-none transition-all resize-none backdrop-blur-sm" 
-                placeholder="Describe what kind of website you want, specific features, pages, or design preferences..."
-              ></textarea>
+                className="w-full glass bg-transparent p-6 rounded-none text-[#f2eeee] font-mono text-xs outline-none focus:border-blue-500/50 transition-all resize-none placeholder:text-zinc-500 border border-white/10 shadow-inner" 
+                placeholder="DESCRIBE OPERATIONAL REQUIREMENTS, SPECIFIC MODULES, OR VISUAL TARGETS..."
+              />
             </div>
 
-            <button 
-              type="submit" 
-              className="w-full bg-white text-black py-4 px-8 rounded-xl font-semibold text-[16px] hover:bg-neutral-200 transition-colors flex items-center justify-center gap-2 mt-4 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
-            >
-              Send to WhatsApp <Send size={18} />
-            </button>
+            <div className="pt-8">
+              <SoundButton 
+                type="submit" 
+                variant="secondary"
+                className="w-full py-6 rounded-none text-sm h-16 flex items-center justify-center font-black"
+              >
+                Initialize Mission Protocol
+                <Send size={18} className="ml-3" />
+              </SoundButton>
+            </div>
           </form>
         </motion.div>
       </div>

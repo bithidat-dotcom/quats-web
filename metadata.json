@@ -1,6 +1,8 @@
 {
-  "name": "ট্যালেন্তো",
-  "description": "Talento - A simplified job portal connecting job seekers and companies without sign-in requirements.",
+  "name": "QUATS",
+  "description": "Quats - A full-scale digital infrastructure for job discovery and high-performance application building.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
