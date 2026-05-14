@@ -156,10 +156,10 @@ export default function Pricing() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="glass backdrop-blur-3xl p-8 rounded-3xl flex flex-col hover:border-blue-500/50 transition-all duration-500 group shadow-lg border border-white/10"
+              className="bg-black p-8 rounded-3xl flex flex-col hover:border-blue-500/50 transition-all duration-500 group shadow-lg border border-zinc-800"
             >
               <div className="flex items-center justify-between mb-8">
-                <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center text-white font-mono text-xs font-bold">
+                <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white font-mono text-xs font-bold">
                   {plan.tier}
                 </div>
                 {plan.popular && (
@@ -199,7 +199,7 @@ export default function Pricing() {
               <SoundButton 
                 onClick={() => handleAcquire(plan)}
                 variant={plan.popular ? 'secondary' : 'glass'}
-                className="w-full py-4 text-[10px]"
+                className="w-full py-4 text-[10px] border-[#0f0b0b] text-[#000000] bg-white hover:bg-zinc-200"
                 disabled={plan.isComingSoon}
               >
                 {plan.isComingSoon ? 'In Sandbox' : 'Initialize'}

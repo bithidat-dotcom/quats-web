@@ -18,6 +18,7 @@ import {
 interface Message {
   role: 'user' | 'assistant';
   content: string;
+  image?: string;
 }
 
 const SYSTEM_INSTRUCTION = `
@@ -55,6 +56,13 @@ export default function AIAssistant() {
     setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
     setIsLoading(true);
 
+    if (userMessage.toLowerCase().includes('generate image') || userMessage.toLowerCase().includes('create image')) {
+      const prompt = userMessage.replace(/(generate|create) image/gi, '').trim();
+      setMessages(prev => [...prev, { role: 'assistant', content: `Generating image for "${prompt}"...`, image: `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}` }]);
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const prompt = `${SYSTEM_INSTRUCTION}\n\nUser: ${userMessage}\nAssistant:`;
       const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(prompt)}`);
@@ -91,25 +99,22 @@ export default function AIAssistant() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-20 right-4 md:bottom-24 md:right-6 z-[70] w-[calc(100vw-32px)] md:w-[400px] h-[75vh] md:h-[550px] bg-zinc-950 border border-zinc-800 rounded-3xl shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col"
+            className="fixed bottom-20 right-4 md:bottom-24 md:right-6 z-[70] w-[calc(100vw-32px)] md:w-[400px] h-[75vh] md:h-[550px] bg-white border border-zinc-200 rounded-3xl shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col"
           >
             {/* Header */}
-            <div className="p-4 bg-zinc-900 border-b border-white/5 flex items-center justify-between">
+            <div className="p-4 bg-white border-b border-zinc-200 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-600/20 flex items-center justify-center border border-blue-500/30">
-                  <Bot size={20} className="text-blue-400" />
+                <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center border border-blue-200">
+                  <Bot size={20} className="text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="font-game text-[10px] uppercase tracking-widest text-white">Adject Advisor</h3>
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                    <span className="text-[8px] font-game text-zinc-500 uppercase tracking-widest">Master Logic Unit</span>
-                  </div>
+                  <h3 className="font-sans font-bold text-sm text-zinc-900">Quats</h3>
+                  <p className="text-[10px] text-zinc-500">Powered by Pollinations.ai</p>
                 </div>
               </div>
               <button 
                 onClick={() => setIsOpen(false)}
-                className="p-2 text-zinc-500 hover:text-white transition-colors"
+                className="p-2 text-zinc-400 hover:text-zinc-600 transition-colors"
               >
                 <ChevronDown size={20} />
               </button>
@@ -118,35 +123,41 @@ export default function AIAssistant() {
             {/* Messages */}
             <div 
               ref={scrollRef}
-              className="flex-1 overflow-y-auto p-4 space-y-6"
+              className="flex-1 overflow-y-auto p-4 space-y-4"
             >
-              <div className="flex items-center gap-2 mb-8">
-                <div className="h-[1px] flex-1 bg-zinc-800" />
-                <span className="text-[8px] font-game text-zinc-600 uppercase tracking-[4px]">Secure Channel Established</span>
-                <div className="h-[1px] flex-1 bg-zinc-800" />
-              </div>
-
               {messages.map((msg, i) => (
                 <motion.div
-                  initial={{ opacity: 0, x: msg.role === 'user' ? 20 : -20 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   key={i}
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`max-w-[85%] flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                    <div className={`w-8 h-8 rounded-lg shrink-0 flex items-center justify-center border ${
+                  <div className={`max-w-[85%] flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                    <div className={`w-8 h-8 rounded-full shrink-0 flex items-center justify-center border ${
                       msg.role === 'user' 
-                        ? 'bg-zinc-800 border-white/10' 
-                        : 'bg-blue-600/10 border-blue-500/20'
+                        ? 'bg-zinc-100 border-zinc-200' 
+                        : 'bg-blue-50 border-blue-100'
                     }`}>
-                      {msg.role === 'user' ? <User size={14} /> : <Zap size={14} className="text-blue-400" />}
+                      {msg.role === 'user' ? <User size={14} className="text-zinc-600" /> : <Bot size={14} className="text-blue-600" />}
                     </div>
-                    <div className={`p-4 rounded-2xl text-[11px] font-game leading-relaxed tracking-wider uppercase ${
+                    <div className={`p-3 rounded-2xl text-sm leading-relaxed ${
                       msg.role === 'user'
-                        ? 'bg-zinc-800 text-white'
-                        : 'bg-zinc-900 text-zinc-300'
+                        ? 'bg-blue-600 text-white rounded-br-none'
+                        : 'bg-zinc-100 text-zinc-800 rounded-bl-none'
                     }`}>
                       {msg.content}
+                      {msg.image && (
+                        <div className="mt-2">
+                          <img src={msg.image} alt="Generated" className="rounded-lg mb-2" />
+                          <a 
+                            href={msg.image} 
+                            download 
+                            className="text-[10px] font-bold text-blue-600 underline"
+                          >
+                            Download Image
+                          </a>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </motion.div>
@@ -166,17 +177,17 @@ export default function AIAssistant() {
             </div>
 
             {/* Input */}
-            <div className="p-4 bg-zinc-900 border-t border-white/5">
+            <div className="p-4 bg-white border-t border-zinc-200">
               <form 
                 onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-                className="flex items-center gap-2 p-1.5 bg-black border border-white/5 rounded-2xl"
+                className="flex items-center gap-2 p-1.5 bg-zinc-50 border border-zinc-200 rounded-2xl"
               >
                 <input 
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="REQUEST STRATEGIC ORIENTATION..."
-                  className="flex-1 bg-transparent px-4 py-2 text-[10px] font-game text-white outline-none placeholder:text-zinc-600 uppercase tracking-widest"
+                  placeholder="Ask Quats..."
+                  className="flex-1 bg-transparent px-4 py-2 text-sm text-zinc-800 outline-none placeholder:text-zinc-400"
                 />
                 <button 
                   type="submit"
@@ -188,23 +199,6 @@ export default function AIAssistant() {
               </form>
             </div>
 
-            {/* Footer */}
-            <div className="px-4 py-2 bg-black flex items-center justify-between">
-              <div className="flex gap-4">
-                <div className="flex items-center gap-1.5">
-                  <ShieldCheck size={10} className="text-blue-500" />
-                  <span className="text-[7px] font-game text-zinc-600 uppercase tracking-widest">Encrypted</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Terminal size={10} className="text-blue-500" />
-                  <span className="text-[7px] font-game text-zinc-600 uppercase tracking-widest">Level 10</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Globe size={10} className="text-blue-400 font-bold" />
-                <span className="text-[7px] font-game text-zinc-600 uppercase tracking-widest">Powered by Pollinations.ai</span>
-              </div>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
